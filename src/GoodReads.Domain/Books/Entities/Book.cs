@@ -52,7 +52,7 @@ namespace GoodReads.Domain.Books.Entities
 
         public void SetBookData(BookData bookData)
         {
-            BookData = BookData;
+            BookData = bookData;
         }
     }
 }

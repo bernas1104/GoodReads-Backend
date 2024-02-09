@@ -93,6 +93,7 @@ namespace GoodReads.Unit.Tests.Domain.Books.Builders
 
             // assert
             book.Should().NotBeNull();
+            book.BookData.Should().NotBeNull();
         }
 
         [Theory]
