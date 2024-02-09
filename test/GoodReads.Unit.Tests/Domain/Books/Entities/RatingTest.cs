@@ -1,6 +1,7 @@
 using GoodReads.Domain.Books.Entities;
 using GoodReads.Domain.Books.ValueObjects;
 using GoodReads.Domain.Common.Exceptions;
+using GoodReads.Shared.Mocks;
 
 namespace GoodReads.Unit.Tests.Domain.Books.Entities
 {
@@ -13,8 +14,9 @@ namespace GoodReads.Unit.Tests.Domain.Books.Entities
         {
             // arrange & act
             var rating = new Rating(
-                score: new Score(_faker.Random.Int(1, 5)),
+                score: ScoreMock.Get(),
                 description: _faker.Random.String2(20),
+                reading: ReadingMock.Get(),
                 userId: Guid.NewGuid(),
                 bookId: Guid.NewGuid()
             );
@@ -32,8 +34,9 @@ namespace GoodReads.Unit.Tests.Domain.Books.Entities
         {
             // arrange & act
             var func = () => new Rating(
-                score: new Score(_faker.Random.Int(1, 5)),
+                score: ScoreMock.Get(),
                 description: description,
+                reading: ReadingMock.Get(),
                 userId: Guid.NewGuid(),
                 bookId: Guid.NewGuid()
             );
@@ -49,8 +52,9 @@ namespace GoodReads.Unit.Tests.Domain.Books.Entities
         {
             // arrange & act
             var func = () => new Rating(
-                score: new Score(_faker.Random.Int(1, 5)),
+                score: ScoreMock.Get(),
                 description: _faker.Random.String2(20),
+                reading: ReadingMock.Get(),
                 userId: Guid.Empty,
                 bookId: Guid.NewGuid()
             );
@@ -66,8 +70,9 @@ namespace GoodReads.Unit.Tests.Domain.Books.Entities
         {
             // arrange & act
             var func = () => new Rating(
-                score: new Score(_faker.Random.Int(1, 5)),
+                score: ScoreMock.Get(),
                 description: _faker.Random.String2(20),
+                reading: ReadingMock.Get(),
                 userId: Guid.NewGuid(),
                 bookId: Guid.Empty
             );

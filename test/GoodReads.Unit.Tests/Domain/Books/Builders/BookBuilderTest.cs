@@ -74,113 +74,52 @@ namespace GoodReads.Unit.Tests.Domain.Books.Builders
         }
 
         [Fact]
-        public void GivenBookBuilder_WhenBuildWithInvalidPages_ShouldThrowDomainException()
-        {
-            // arrange & act
-            var func = () => _builder.AddPages(0);
-
-            // assert
-            func.Should()
-                .Throw<DomainException>()
-                .WithMessage("'Pages' must be greater than 0");
-        }
-
-        [Fact]
-        public void GivenBookBuilder_WhenBuildWithValidPages_ShouldReturnBookWithPages()
+        public void GivenBookBuilder_WhenBuildWithValidBookData_ShouldReturnBookWithBookData()
         {
             // arrange
+            var publisher = _faker.Company.CompanyName();
+            var yearOfPublication = _faker.Date.Recent().Year;
             var pages = _faker.Random.Int(1, 500);
 
             // act
-            _builder.AddPages(pages);
+            _builder.AddBookData(
+                publisher,
+                yearOfPublication,
+                pages,
+                _dateProvider
+            );
 
             var book = _builder.GetBook();
 
             // assert
             book.Should().NotBeNull();
-            book.Pages.Should().BePositive();
         }
 
         [Theory]
-        [InlineData("")]
-        [InlineData(" ")]
-        public void GivenBookBuilder_WhenBuildWithInvalidPublisher_ShouldThrowDomainException(
-            string publisher
+        [InlineData("", 1950, 300, "'Publisher' is required")]
+        [InlineData(" ", 2012, 250, "'Publisher' is required")]
+        [InlineData("Publisher", (int)default, 400, "'YearOfPublication' is required")]
+        [InlineData("Publisher", null, 400, "'YearOfPublication' must be equal to or less than current year")]
+        [InlineData("Publisher", 2004, 0, "'Pages' must be greater than 0")]
+        public void GivenBookBuilder_WhenBuildWithInvalidBookData_ShouldThrowDomainException(
+            string publisher,
+            int? yearOfPublication,
+            int pages,
+            string message
         )
         {
             // arrange & act
-            var func = () => _builder.AddPublisher(publisher);
+            var func = () => _builder.AddBookData(
+                publisher: publisher,
+                yearOfPublication: yearOfPublication ?? DateTime.UtcNow.Year + 1,
+                pages: pages,
+                dateProvider: _dateProvider
+            );
 
             // assert
             func.Should()
                 .Throw<DomainException>()
-                .WithMessage("'Publisher' is required");
-        }
-
-        [Fact]
-        public void GivenBookBuilder_WhenBuildWithValidPublisher_ShouldReturnBookWithPublisher()
-        {
-            // arrange
-            var publisher = _faker.Random.String2(10);
-
-            // act
-            _builder.AddPublisher(publisher);
-
-            var book = _builder.GetBook();
-
-            // assert
-            book.Should().NotBeNull();
-            book.Publisher.Should().NotBeNullOrEmpty();
-            book.Publisher.Should().NotBeNullOrWhiteSpace();
-        }
-
-        [Fact]
-        public void GivenBookBuilder_WhenBuildWithTooOldYearOfPublication_ShouldThrowDomainException()
-        {
-            // arrange & act
-            var func = () => _builder.AddYearOfPublication(1899, _dateProvider);
-            
-            // assert
-            func.Should()
-                .Throw<DomainException>()
-                .WithMessage($"'YearOfPublication' must be between 1900 and {_dateProvider.GetCurrentYear()}");
-        }
-
-        [Fact]
-        public void GivenBookBuilder_WhenBuildWithFutureYearOfPublication_ShouldThrowDomainException()
-        {
-            // arrange
-            var nextYear = DateTime.UtcNow.Year + 1;
-            
-            // act
-            var func = () => _builder.AddYearOfPublication(nextYear, _dateProvider);
-            
-            // assert
-            func.Should()
-                .Throw<DomainException>()
-                .WithMessage($"'YearOfPublication' must be between 1900 and {_dateProvider.GetCurrentYear()}");
-        }
-
-        [Fact]
-        public void GivenBookBuilder_WhenBuildWithValidYearOfPublication_ShouldReturnBookWithYearOfPublication()
-        {
-            // arrange
-            var currentYear = DateTime.UtcNow.Year;
-            var year = _faker.Random.Int(1900, currentYear);
-
-            // act
-            _builder.AddYearOfPublication(year, _dateProvider);
-
-            var book = _builder.GetBook();
-            
-            // assert
-            book.Should().NotBeNull();
-            book.YearOfPublication
-                .Should()
-                .BeGreaterThan(1899);
-            book.YearOfPublication
-                .Should()
-                .BeLessThanOrEqualTo(currentYear);
+                .WithMessage(message);
         }
     }
 }

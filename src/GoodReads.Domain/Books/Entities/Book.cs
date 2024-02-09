@@ -1,7 +1,7 @@
 using GoodReads.Domain.Books.Enums;
+using GoodReads.Domain.Books.ValueObjects;
 using GoodReads.Domain.Common;
 using GoodReads.Domain.Common.Exceptions;
-using GoodReads.Domain.Common.Interfaces.Providers;
 
 using Throw;
 
@@ -14,10 +14,8 @@ namespace GoodReads.Domain.Books.Entities
         public string Description { get; private set; }
         public string Isbn { get; private set; }
         public string Author { get; private set; }
-        public string Publisher { get; private set; }
         public Gender Gender { get; private set; }
-        public int YearOfPublication { get; private set; }
-        public int Pages { get; private set; }
+        public BookData BookData { get; private set; }
         public IEnumerable<byte> Cover { get; private set; }
         public IEnumerable<Rating> Ratings { get; private set; }
 
@@ -52,33 +50,9 @@ namespace GoodReads.Domain.Books.Entities
             Description = description;
         }
 
-        public void SetPages(int pages)
+        public void SetBookData(BookData bookData)
         {
-            pages.Throw(() => new DomainException("'Pages' must be greater than 0"))
-                .IfLessThan(1);
-
-            Pages = pages;
-        }
-
-        public void SetPublisher(string publisher)
-        {
-            publisher.Throw(() => new DomainException("'Publisher' is required"))
-                .IfEmpty()
-                .IfWhiteSpace();
-
-            Publisher = publisher;
-        }
-
-        public void SetYearOfPublication(int yearOfPublication, IDateProvider dateProvider) 
-        {
-            var currentYear = dateProvider.GetCurrentYear();
-
-            yearOfPublication
-                .Throw(() => new DomainException($"'YearOfPublication' must be between 1900 and {currentYear}"))
-                .IfLessThan(1900)
-                .IfGreaterThan(currentYear);
-
-            YearOfPublication = yearOfPublication;
+            BookData = BookData;
         }
     }
 }

@@ -1,6 +1,7 @@
 using GoodReads.Domain.Books.Entities;
 using GoodReads.Domain.Books.Enums;
 using GoodReads.Domain.Books.Interfaces.Builders;
+using GoodReads.Domain.Books.ValueObjects;
 using GoodReads.Domain.Common.Interfaces.Providers;
 
 #pragma warning disable CS8618
@@ -42,24 +43,21 @@ namespace GoodReads.Domain.Books.Builders
             return this;
         }
 
-        public IBookBuilder AddPages(int pages)
-        {
-            _book.SetPages(pages);
-            return this;
-        }
-
-        public IBookBuilder AddPublisher(string publisher)
-        {
-            _book.SetPublisher(publisher);
-            return this;
-        }
-
-        public IBookBuilder AddYearOfPublication(
+        public IBookBuilder AddBookData(
+            string publisher,
             int yearOfPublication,
+            int pages,
             IDateProvider dateProvider
         )
         {
-            _book.SetYearOfPublication(yearOfPublication, dateProvider);
+            _book.SetBookData(
+                new BookData(
+                    publisher,
+                    yearOfPublication,
+                    pages,
+                    dateProvider
+                )
+            );
             return this;
         }
 
