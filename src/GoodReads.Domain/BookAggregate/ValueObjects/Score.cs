@@ -3,7 +3,7 @@ using GoodReads.Domain.Common.Exceptions;
 
 using Throw;
 
-namespace GoodReads.Domain.Books.ValueObjects
+namespace GoodReads.Domain.BookAggregate.ValueObjects
 {
     public sealed class Score : ValueObject
     {

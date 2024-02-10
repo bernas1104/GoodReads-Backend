@@ -1,10 +1,10 @@
-using GoodReads.Domain.Books.ValueObjects;
+using GoodReads.Domain.BookAggregate.ValueObjects;
 using GoodReads.Domain.Common;
 using GoodReads.Domain.Common.Exceptions;
 
 using Throw;
 
-namespace GoodReads.Domain.Books.Entities
+namespace GoodReads.Domain.BookAggregate.Entities
 {
     public sealed class Rating : Entity
     {

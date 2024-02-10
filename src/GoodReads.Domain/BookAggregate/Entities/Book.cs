@@ -1,12 +1,12 @@
-using GoodReads.Domain.Books.Enums;
-using GoodReads.Domain.Books.ValueObjects;
+using GoodReads.Domain.BookAggregate.Enums;
+using GoodReads.Domain.BookAggregate.ValueObjects;
 using GoodReads.Domain.Common;
 using GoodReads.Domain.Common.Exceptions;
 
 using Throw;
 
 #pragma warning disable CS8618
-namespace GoodReads.Domain.Books.Entities
+namespace GoodReads.Domain.BookAggregate.Entities
 {
     public sealed class Book : AggregateRoot
     {

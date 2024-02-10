@@ -1,10 +1,10 @@
-using GoodReads.Domain.Books.Builders;
-using GoodReads.Domain.Books.Enums;
+using GoodReads.Domain.BookAggregate.Builders;
+using GoodReads.Domain.BookAggregate.Enums;
 using GoodReads.Domain.Common.Exceptions;
 using GoodReads.Domain.Common.Interfaces.Providers;
 using GoodReads.Shared.Providers;
 
-namespace GoodReads.Unit.Tests.Domain.Books.Builders
+namespace GoodReads.Unit.Tests.Domain.BookAggregate.Builders
 {
     public class BookBuilderTest
     {

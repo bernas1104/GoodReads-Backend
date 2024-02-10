@@ -1,6 +1,6 @@
 using Bogus;
 
-using GoodReads.Domain.Books.ValueObjects;
+using GoodReads.Domain.BookAggregate.ValueObjects;
 
 namespace GoodReads.Shared.Mocks
 {

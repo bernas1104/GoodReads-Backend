@@ -1,9 +1,9 @@
-using GoodReads.Domain.Books.Entities;
-using GoodReads.Domain.Books.ValueObjects;
+using GoodReads.Domain.BookAggregate.Entities;
+using GoodReads.Domain.BookAggregate.ValueObjects;
 using GoodReads.Domain.Common.Exceptions;
 using GoodReads.Shared.Mocks;
 
-namespace GoodReads.Unit.Tests.Domain.Books.Entities
+namespace GoodReads.Unit.Tests.Domain.BookAggregate.Entities
 {
     public class RatingTest
     {

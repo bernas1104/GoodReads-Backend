@@ -1,11 +1,11 @@
-using GoodReads.Domain.Books.Entities;
-using GoodReads.Domain.Books.Enums;
-using GoodReads.Domain.Books.Interfaces.Builders;
-using GoodReads.Domain.Books.ValueObjects;
+using GoodReads.Domain.BookAggregate.Entities;
+using GoodReads.Domain.BookAggregate.Enums;
+using GoodReads.Domain.BookAggregate.Interfaces.Builders;
+using GoodReads.Domain.BookAggregate.ValueObjects;
 using GoodReads.Domain.Common.Interfaces.Providers;
 
 #pragma warning disable CS8618
-namespace GoodReads.Domain.Books.Builders
+namespace GoodReads.Domain.BookAggregate.Builders
 {
     public class BookBuilder : IBookBuilder
     {

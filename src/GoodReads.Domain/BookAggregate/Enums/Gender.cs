@@ -1,6 +1,6 @@
 using Ardalis.SmartEnum;
 
-namespace GoodReads.Domain.Books.Enums
+namespace GoodReads.Domain.BookAggregate.Enums
 {
     public sealed class Gender : SmartEnum<Gender>
     {

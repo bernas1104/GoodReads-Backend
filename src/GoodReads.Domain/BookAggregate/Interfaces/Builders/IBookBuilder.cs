@@ -1,6 +1,6 @@
 using GoodReads.Domain.Common.Interfaces.Providers;
 
-namespace GoodReads.Domain.Books.Interfaces.Builders
+namespace GoodReads.Domain.BookAggregate.Interfaces.Builders
 {
     public interface IBookBuilder
     {

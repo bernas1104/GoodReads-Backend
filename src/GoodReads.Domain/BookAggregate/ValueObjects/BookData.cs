@@ -4,7 +4,7 @@ using GoodReads.Domain.Common.Interfaces.Providers;
 
 using Throw;
 
-namespace GoodReads.Domain.Books.ValueObjects
+namespace GoodReads.Domain.BookAggregate.ValueObjects
 {
     public class BookData : ValueObject
     {

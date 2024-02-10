@@ -1,7 +1,7 @@
-using GoodReads.Domain.Books.ValueObjects;
+using GoodReads.Domain.BookAggregate.ValueObjects;
 using GoodReads.Domain.Common.Exceptions;
 
-namespace GoodReads.Unit.Tests.Domain.Books.ValueObjects
+namespace GoodReads.Unit.Tests.Domain.BookAggregate.ValueObjects
 {
     public class ReadingTest
     {
