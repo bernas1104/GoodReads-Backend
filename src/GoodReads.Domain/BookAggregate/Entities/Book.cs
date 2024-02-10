@@ -28,7 +28,7 @@ namespace GoodReads.Domain.BookAggregate.Entities
             Cover = new List<byte>();
         }
 
-        public decimal MeanScore { 
+        public decimal MeanScore {
             get {
                 if (!Ratings.Any())
                 {
@@ -36,7 +36,7 @@ namespace GoodReads.Domain.BookAggregate.Entities
                 }
 
                 return Ratings.Sum(x => x.Score.Value) / Ratings.Count();
-            } 
+            }
         }
 
         public void SetCover(IEnumerable<byte> cover) => Cover = cover;
