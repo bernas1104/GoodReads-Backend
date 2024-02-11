@@ -1,5 +1,3 @@
-using ErrorOr;
-
 using GoodReads.Domain.Common;
 
 namespace GoodReads.Domain.UserAggregate.Entities
@@ -19,11 +17,9 @@ namespace GoodReads.Domain.UserAggregate.Entities
             _ratings = new List<Guid>();
         }
 
-        public ErrorOr<Success> AddRating(Guid ratingId)
+        public void AddRating(Guid ratingId)
         {
             _ratings.Add(ratingId);
-
-            return Result.Success;
         }
     }
 }
