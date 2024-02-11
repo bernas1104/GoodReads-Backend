@@ -1,7 +1,7 @@
 using GoodReads.Domain.RatingAggregate.Entities;
 using GoodReads.Shared.Mocks;
 
-namespace GoodReads.Unit.Tests.Domain.BookAggregate.Entities
+namespace GoodReads.Unit.Tests.Domain.RatingAggregate.Entities
 {
     public class RatingTest
     {

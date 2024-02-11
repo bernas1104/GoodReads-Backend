@@ -2,8 +2,6 @@ using GoodReads.Domain.BookAggregate.Enums;
 using GoodReads.Domain.BookAggregate.ValueObjects;
 using GoodReads.Domain.Common;
 
-using Throw;
-
 #pragma warning disable CS8618
 namespace GoodReads.Domain.BookAggregate.Entities
 {
@@ -13,7 +11,7 @@ namespace GoodReads.Domain.BookAggregate.Entities
         public string Description { get; private set; }
         public string Isbn { get; private set; }
         public string Author { get; private set; }
-        public decimal MeanScore { get; private set; }
+        public MeanScore MeanScore { get; private set; }
         public Gender Gender { get; private set; }
         public BookData BookData { get; private set; }
         public IEnumerable<byte> Cover { get; private set; }
@@ -26,7 +24,7 @@ namespace GoodReads.Domain.BookAggregate.Entities
             Isbn = isbn;
             Author = author;
             Gender = gender;
-            MeanScore = default;
+            MeanScore = new ();
 
             Cover = new List<byte>();
             _ratings = new List<Guid>();
@@ -42,6 +40,15 @@ namespace GoodReads.Domain.BookAggregate.Entities
         public void SetBookData(BookData bookData)
         {
             BookData = bookData;
+        }
+
+        public void AddRating(Guid ratingId, int ratingScore)
+        {
+            _ratings.Add(ratingId);
+
+            MeanScore.Update(ratingScore);
+
+            Update();
         }
     }
 }

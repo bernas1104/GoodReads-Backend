@@ -21,14 +21,6 @@ namespace GoodReads.Domain.UserAggregate.Entities
 
         public ErrorOr<Success> AddRating(Guid ratingId)
         {
-            if (ratingId == Guid.Empty)
-            {
-                return Error.Validation(
-                    code: "",
-                    description: ""
-                );
-            }
-
             _ratings.Add(ratingId);
 
             return Result.Success;
