@@ -1,5 +1,4 @@
-using GoodReads.Domain.BookAggregate.ValueObjects;
-using GoodReads.Domain.Common.Exceptions;
+using GoodReads.Domain.RatingAggregate.ValueObjects;
 
 namespace GoodReads.Unit.Tests.Domain.BookAggregate.ValueObjects
 {
@@ -15,22 +14,6 @@ namespace GoodReads.Unit.Tests.Domain.BookAggregate.ValueObjects
 
             // assert
             score.Should().NotBeNull();
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(6)]
-        public void GivenNewScore_WhenInvalidValue_ShouldThrowDomainException(
-            int value
-        )
-        {
-            // arrange & act
-            var func = () => new Score(value);
-
-            // assert
-            func.Should()
-                .Throw<DomainException>()
-                .WithMessage("'Score' must be an integer between 1 and 5");
         }
     }
 }

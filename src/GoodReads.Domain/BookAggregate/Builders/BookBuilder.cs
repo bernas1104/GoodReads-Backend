@@ -2,7 +2,6 @@ using GoodReads.Domain.BookAggregate.Entities;
 using GoodReads.Domain.BookAggregate.Enums;
 using GoodReads.Domain.BookAggregate.Interfaces.Builders;
 using GoodReads.Domain.BookAggregate.ValueObjects;
-using GoodReads.Domain.Common.Interfaces.Providers;
 
 #pragma warning disable CS8618
 namespace GoodReads.Domain.BookAggregate.Builders
@@ -46,16 +45,14 @@ namespace GoodReads.Domain.BookAggregate.Builders
         public IBookBuilder AddBookData(
             string publisher,
             int yearOfPublication,
-            int pages,
-            IDateProvider dateProvider
+            int pages
         )
         {
             _book.SetBookData(
                 new BookData(
                     publisher,
                     yearOfPublication,
-                    pages,
-                    dateProvider
+                    pages
                 )
             );
             return this;

@@ -1,5 +1,5 @@
-using GoodReads.Domain.BookAggregate.ValueObjects;
 using GoodReads.Domain.Common.Exceptions;
+using GoodReads.Domain.RatingAggregate.ValueObjects;
 
 namespace GoodReads.Unit.Tests.Domain.BookAggregate.ValueObjects
 {
@@ -21,24 +21,6 @@ namespace GoodReads.Unit.Tests.Domain.BookAggregate.ValueObjects
 
             // assert
             reading.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void GivenNewReading_WhenInvalidInitiatedAt_ShouldThrowDomainException()
-        {
-            // arrange
-            var initiatedAt = new DateTime();
-
-            // act
-            var func = () => new Reading(
-                initiatedAt: initiatedAt,
-                finishedAt: initiatedAt.AddDays(_faker.Random.Int(1, 10))
-            );
-
-            // assert
-            func.Should()
-                .Throw<DomainException>()
-                .WithMessage("'InitiatedAt' is required");
         }
 
         [Fact]

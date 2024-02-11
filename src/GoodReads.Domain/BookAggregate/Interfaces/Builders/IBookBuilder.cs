@@ -9,8 +9,7 @@ namespace GoodReads.Domain.BookAggregate.Interfaces.Builders
         IBookBuilder AddBookData(
             string publisher,
             int yearOfPublication,
-            int pages,
-            IDateProvider dateProvider
+            int pages
         );
     }
 }

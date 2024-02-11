@@ -1,10 +1,7 @@
-using GoodReads.Domain.BookAggregate.ValueObjects;
 using GoodReads.Domain.Common;
-using GoodReads.Domain.Common.Exceptions;
+using GoodReads.Domain.RatingAggregate.ValueObjects;
 
-using Throw;
-
-namespace GoodReads.Domain.BookAggregate.Entities
+namespace GoodReads.Domain.RatingAggregate.Entities
 {
     public sealed class Rating : Entity
     {
@@ -22,24 +19,11 @@ namespace GoodReads.Domain.BookAggregate.Entities
             Guid bookId
         )
         {
-            description.Throw(() => GeneratePropertyException(nameof(description)))
-                .IfEmpty()
-                .IfWhiteSpace();
-
-            userId.Throw(() => GeneratePropertyException(nameof(userId)))
-                .IfDefault();
-
-            bookId.Throw(() => GeneratePropertyException(nameof(bookId)))
-                .IfDefault();
-
             Score = score;
             Description = description;
             Reading = reading;
             UserId = userId;
             BookId = bookId;
         }
-
-        private DomainException GeneratePropertyException(string propertyName) =>
-            new DomainException($"'{propertyName}' is required");
     }
 }

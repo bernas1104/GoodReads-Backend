@@ -1,7 +1,6 @@
 using GoodReads.Domain.BookAggregate.Enums;
 using GoodReads.Domain.BookAggregate.ValueObjects;
 using GoodReads.Domain.Common;
-using GoodReads.Domain.Common.Exceptions;
 
 using Throw;
 
@@ -14,10 +13,12 @@ namespace GoodReads.Domain.BookAggregate.Entities
         public string Description { get; private set; }
         public string Isbn { get; private set; }
         public string Author { get; private set; }
+        public decimal MeanScore { get; private set; }
         public Gender Gender { get; private set; }
         public BookData BookData { get; private set; }
         public IEnumerable<byte> Cover { get; private set; }
-        public IEnumerable<Rating> Ratings { get; private set; }
+        public IReadOnlyList<Guid> Ratings { get => _ratings.ToList(); }
+        private readonly List<Guid> _ratings;
 
         public Book(string title, string isbn, string author, Gender gender)
         {
@@ -25,28 +26,16 @@ namespace GoodReads.Domain.BookAggregate.Entities
             Isbn = isbn;
             Author = author;
             Gender = gender;
+            MeanScore = default;
+
             Cover = new List<byte>();
-        }
-
-        public decimal MeanScore {
-            get {
-                if (!Ratings.Any())
-                {
-                    return 0;
-                }
-
-                return Ratings.Sum(x => x.Score.Value) / Ratings.Count();
-            }
+            _ratings = new List<Guid>();
         }
 
         public void SetCover(IEnumerable<byte> cover) => Cover = cover;
 
         public void SetDescription(string description)
         {
-            description.Throw(() => new DomainException("'Description' is required"))
-                .IfEmpty()
-                .IfWhiteSpace();
-
             Description = description;
         }
 
