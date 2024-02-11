@@ -8,7 +8,7 @@ namespace GoodReads.Unit.Tests.Domain.RatingAggregate.ValueObjects
         private readonly Faker _faker = new ();
 
         [Fact]
-        public void GivenNewReading_WhenValidDates_ShouldCreateReadingInstance()
+        public void GivenNewReading_WhenValidFinishedAtDate_ShouldCreateReadingInstance()
         {
             // arrange
             var initiatedAt = _faker.Date.Recent();

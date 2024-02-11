@@ -8,7 +8,7 @@ namespace GoodReads.Unit.Tests.Domain.RatingAggregate.Entities
         private readonly Faker _faker = new ();
 
         [Fact]
-        public void GivenNewRating_WhenValidData_ShouldCreateRatingInstace()
+        public void GivenNewRating_ShouldCreateRatingInstace()
         {
             // arrange & act
             var rating = new Rating(
