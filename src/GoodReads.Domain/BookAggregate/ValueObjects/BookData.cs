@@ -2,7 +2,7 @@ using GoodReads.Domain.Common;
 
 namespace GoodReads.Domain.BookAggregate.ValueObjects
 {
-    public class BookData : ValueObject
+    public sealed class BookData : ValueObject
     {
         public string Publisher { get; private set; }
         public int YearOfPublication { get; private set; }

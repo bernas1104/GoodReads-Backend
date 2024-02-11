@@ -5,7 +5,7 @@ using Throw;
 
 namespace GoodReads.Domain.RatingAggregate.ValueObjects
 {
-    public class Reading : ValueObject
+    public sealed class Reading : ValueObject
     {
         public DateTime InitiatedAt { get; private set; }
         public DateTime FinishedAt { get; private set; }

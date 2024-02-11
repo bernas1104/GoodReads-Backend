@@ -2,7 +2,7 @@ using GoodReads.Domain.Common;
 
 namespace GoodReads.Domain.BookAggregate.ValueObjects
 {
-    public class MeanScore : ValueObject
+    public sealed class MeanScore : ValueObject
     {
         public decimal Value {
             get {

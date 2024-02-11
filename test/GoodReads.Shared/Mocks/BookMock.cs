@@ -20,7 +20,7 @@ namespace GoodReads.Shared.Mocks
         )
         {
             return new Faker<Book>().CustomInstantiator(f =>
-                new Book(
+                Book.Create(
                     title: title ?? f.Random.String2(10),
                     isbn: isbn ?? f.Random.String2(20),
                     author: author ?? f.Person.FullName,

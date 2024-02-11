@@ -11,7 +11,7 @@ namespace GoodReads.Unit.Tests.Domain.RatingAggregate.Entities
         public void GivenNewRating_ShouldCreateRatingInstace()
         {
             // arrange & act
-            var rating = new Rating(
+            var rating = Rating.Create(
                 score: ScoreMock.Get(),
                 description: _faker.Random.String2(20),
                 reading: ReadingMock.Get(),

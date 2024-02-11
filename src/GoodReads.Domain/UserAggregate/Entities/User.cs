@@ -2,11 +2,11 @@ using GoodReads.Domain.Common;
 
 namespace GoodReads.Domain.UserAggregate.Entities
 {
-    public class User : AggregateRoot
+    public sealed class User : AggregateRoot
     {
         public string Name { get; private set; }
         public string Email { get; private set; }
-        public IReadOnlyList<Guid> Ratings { get => _ratings.ToList(); }
+        public IReadOnlyList<Guid> Ratings { get => _ratings.AsReadOnly(); }
         private readonly List<Guid> _ratings;
 
         public User(string name, string email)

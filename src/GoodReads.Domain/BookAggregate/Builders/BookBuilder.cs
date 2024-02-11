@@ -27,7 +27,7 @@ namespace GoodReads.Domain.BookAggregate.Builders
             Gender gender
         )
         {
-            _book = new Book(title, isbn, author, gender);
+            _book = Book.Create(title, isbn, author, gender);
         }
 
         public IBookBuilder AddCover(IEnumerable<byte> cover)

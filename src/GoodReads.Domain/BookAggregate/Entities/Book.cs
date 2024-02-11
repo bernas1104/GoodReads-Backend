@@ -15,10 +15,10 @@ namespace GoodReads.Domain.BookAggregate.Entities
         public Gender Gender { get; private set; }
         public BookData BookData { get; private set; }
         public IEnumerable<byte> Cover { get; private set; }
-        public IReadOnlyList<Guid> Ratings { get => _ratings.ToList(); }
+        public IReadOnlyList<Guid> Ratings { get => _ratings.AsReadOnly(); }
         private readonly List<Guid> _ratings;
 
-        public Book(string title, string isbn, string author, Gender gender)
+        private Book(string title, string isbn, string author, Gender gender)
         {
             Title = title;
             Isbn = isbn;
@@ -49,6 +49,16 @@ namespace GoodReads.Domain.BookAggregate.Entities
             MeanScore.Update(ratingScore);
 
             Update();
+        }
+
+        public static Book Create(
+            string title,
+            string isbn,
+            string author,
+            Gender gender
+        )
+        {
+            return new Book(title, isbn, author, gender);
         }
     }
 }
