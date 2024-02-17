@@ -1,11 +1,10 @@
-using GoodReads.Domain.Common.Interfaces.Providers;
 using GoodReads.Domain.Common.Providers;
 
 namespace GoodReads.Unit.Tests.Domain.Common.Providers
 {
     public class DateProviderTest
     {
-        private readonly IDateProvider _dateProvider;
+        private readonly DateProvider _dateProvider;
 
         public DateProviderTest()
         {

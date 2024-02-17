@@ -9,10 +9,10 @@ namespace GoodReads.Unit.Tests.Domain.Common
         public void GivenDomainEvent_WhenAddDomainEvent_ShouldIncrementDomainEventsListCount()
         {
             // arrange
-            var entity = new Foo();
-            var domainEvent = new FooEvent();
+            var entity = new FooEntity();
+            var domainEvent = new FooEntityEvent();
 
-            var eventsCount = entity.DomainEvents.Count();
+            var eventsCount = entity.DomainEvents.Count;
 
             // act
             entity.AddDomainEvent(domainEvent);
@@ -25,10 +25,10 @@ namespace GoodReads.Unit.Tests.Domain.Common
         public void GivenEntityWithDomainEventsList_WhenClearDomainEvents_ShouldClearEntityDomainEventList()
         {
             // arrange
-            var entity = new Foo();
-            var domainEvent = new FooEvent();
+            var entity = new FooEntity();
+            var domainEvent = new FooEntityEvent();
 
-            var eventsCount = entity.DomainEvents.Count();
+            var eventsCount = entity.DomainEvents.Count;
 
             entity.AddDomainEvent(domainEvent);
 
@@ -40,10 +40,10 @@ namespace GoodReads.Unit.Tests.Domain.Common
         }
     }
 
-    public class Foo : Entity
+    internal class FooEntity : Entity<Guid>
     {
         //
     }
 
-    public record FooEvent() : IDomainEvent;
+    internal record FooEntityEvent() : IDomainEvent;
 }

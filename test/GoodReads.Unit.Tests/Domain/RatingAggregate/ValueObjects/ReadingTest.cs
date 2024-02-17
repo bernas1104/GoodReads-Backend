@@ -40,5 +40,25 @@ namespace GoodReads.Unit.Tests.Domain.RatingAggregate.ValueObjects
                 .Throw<DomainException>()
                 .WithMessage("'FinishedAt' must be greater than 'InitiatedAt'");
         }
+
+        [Fact]
+        public void GivenReading_WhenGetEqualityComponents_ShouldReturnReadingsProperties()
+        {
+            // arrange
+            var initiatedAt = _faker.Date.Recent();
+            var finishedAt = initiatedAt.AddDays(1);
+            var reading = new Reading(
+                initiatedAt,
+                finishedAt
+            );
+
+            // act
+            var equalityComponents = reading.GetEqualityComponents();
+
+            // assert
+            equalityComponents.Count().Should().Be(2);
+            equalityComponents.ElementAt(0).Should().Be(initiatedAt);
+            equalityComponents.ElementAt(1).Should().Be(finishedAt);
+        }
     }
 }

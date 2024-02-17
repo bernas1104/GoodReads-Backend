@@ -32,5 +32,20 @@ namespace GoodReads.Unit.Tests.Domain.RatingAggregate.ValueObjects
                 .Throw<DomainException>()
                 .WithMessage("'Score' must be between 1 and 5");
         }
+
+        [Fact]
+        public void GivenScore_WhenGetEqualityComponents_ShouldReturnScoresProperties()
+        {
+            // arrange
+            var value = _faker.Random.Int(1, 5);
+            var score = new Score(value);
+
+            // act
+            var equalityComponents = score.GetEqualityComponents();
+
+            // assert
+            equalityComponents.Count().Should().Be(1);
+            equalityComponents.ElementAt(0).Should().Be(value);
+        }
     }
 }

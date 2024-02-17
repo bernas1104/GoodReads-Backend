@@ -5,7 +5,7 @@ using GoodReads.Domain.Common;
 #pragma warning disable CS8618
 namespace GoodReads.Domain.BookAggregate.Entities
 {
-    public sealed class Book : AggregateRoot
+    public sealed class Book : AggregateRoot<BookId, Guid>
     {
         public string Title { get; private set; }
         public string Description { get; private set; }
@@ -19,6 +19,7 @@ namespace GoodReads.Domain.BookAggregate.Entities
         private readonly List<Guid> _ratings;
 
         private Book(string title, string isbn, string author, Gender gender)
+            : base (BookId.CreateUnique())
         {
             Title = title;
             Isbn = isbn;

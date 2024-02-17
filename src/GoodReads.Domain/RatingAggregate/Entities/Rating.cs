@@ -4,7 +4,7 @@ using GoodReads.Domain.RatingAggregate.ValueObjects;
 
 namespace GoodReads.Domain.RatingAggregate.Entities
 {
-    public sealed class Rating : Entity
+    public sealed class Rating : AggregateRoot<RatingId, Guid>
     {
         public Score Score { get; private set; }
         public string Description { get; private set; }
@@ -18,7 +18,7 @@ namespace GoodReads.Domain.RatingAggregate.Entities
             Reading reading,
             Guid userId,
             Guid bookId
-        )
+        ) : base(RatingId.CreateUnique())
         {
             Score = score;
             Description = description;

@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
 using Bogus;
 
@@ -10,6 +7,7 @@ using GoodReads.Domain.BookAggregate.Enums;
 
 namespace GoodReads.Shared.Mocks
 {
+    [ExcludeFromCodeCoverage]
     public static class BookMock
     {
         public static Book Get(
