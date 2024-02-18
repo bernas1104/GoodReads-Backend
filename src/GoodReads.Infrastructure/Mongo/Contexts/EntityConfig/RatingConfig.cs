@@ -16,7 +16,22 @@ namespace GoodReads.Infrastructure.Mongo.Contexts.EntityConfig
         {
             var indexes = new List<CreateIndexModel<Rating>>
             {
-                //
+                new CreateIndexModel<Rating>(
+                    Builder.Ascending(x => x.CreatedAt)
+                ),
+                new CreateIndexModel<Rating>(
+                    Builder.Ascending(x => x.BookId)
+                ),
+                new CreateIndexModel<Rating>(
+                    Builder.Ascending(x => x.UserId)
+                ),
+                new CreateIndexModel<Rating>(
+                    Builder.Ascending(x => x.BookId)
+                        .Descending(x => x.UserId)
+                ),
+                new CreateIndexModel<Rating>(
+                    Builder.Ascending(x => x.Score.Value)
+                )
             };
 
             AddIndexes(indexes);

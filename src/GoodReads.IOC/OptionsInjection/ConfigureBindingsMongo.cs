@@ -32,6 +32,19 @@ namespace GoodReads.IOC.OptionsInjection
 
             ConfigureMongoRepositories(services);
 
+            ConfigureMongoSerializer();
+        }
+
+        private static void ConfigureMongoRepositories(IServiceCollection services)
+        {
+            services.AddScoped<
+                IRepository<Rating, Guid>,
+                MongoGenericRepository<Rating, Guid>
+            >();
+        }
+
+        private static void ConfigureMongoSerializer()
+        {
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
             #pragma warning disable CS0618, CS8602
@@ -45,14 +58,6 @@ namespace GoodReads.IOC.OptionsInjection
             #pragma warning restore
 
             BsonSerializer.RegisterSerializer(objectSerializer);
-        }
-
-        private static void ConfigureMongoRepositories(IServiceCollection services)
-        {
-            services.AddScoped<
-                IRepository<Rating, RatingId, Guid>,
-                MongoGenericRepository<Rating, RatingId, Guid>
-            >();
         }
     }
 }

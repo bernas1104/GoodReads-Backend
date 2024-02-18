@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 
+using GoodReads.IOC;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -28,6 +30,8 @@ builder.Services.AddVersionedApiExplorer(
 );
 
 builder.Services.AddSwaggerGen();
+
+builder.Services.RegisterBindings(builder.Configuration);
 
 var app = builder.Build();
 

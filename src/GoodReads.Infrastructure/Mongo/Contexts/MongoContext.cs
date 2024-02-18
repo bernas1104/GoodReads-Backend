@@ -1,3 +1,4 @@
+using GoodReads.Infrastructure.Mongo.Contexts.EntityConfig;
 using GoodReads.Infrastructure.Mongo.Contexts.Interfaces;
 using GoodReads.Infrastructure.Mongo.Utils;
 using GoodReads.Infrastructure.Mongo.Utils.Interfaces;
@@ -25,9 +26,9 @@ namespace GoodReads.Infrastructure.Mongo.Contexts
             Configure();
         }
 
-        private static void Configure()
+        private void Configure()
         {
-            //
+            new RatingConfig(this).CreateIndexes();
         }
 
         public IMongoCollection<T> GetCollection<T>(string? name = null)

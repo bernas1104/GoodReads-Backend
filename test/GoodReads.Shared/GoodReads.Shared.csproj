@@ -2,6 +2,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\GoodReads.Domain\GoodReads.Domain.csproj" />
+    <ProjectReference Include="..\..\src\GoodReads.Api\GoodReads.Api.csproj" />
+    <ProjectReference Include="..\..\src\GoodReads.Application\GoodReads.Application.csproj" />
+    <ProjectReference Include="..\..\src\GoodReads.Infrastructure\GoodReads.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\GoodReads.IOC\GoodReads.IOC.csproj" />
   </ItemGroup>
 
   <ItemGroup>

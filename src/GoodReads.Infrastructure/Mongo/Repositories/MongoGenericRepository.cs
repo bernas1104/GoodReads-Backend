@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 using GoodReads.Domain.Common;
 using GoodReads.Domain.Common.Interfaces.Repositories;
 using GoodReads.Infrastructure.Mongo.Contexts.Interfaces;
@@ -6,10 +8,9 @@ using MongoDB.Driver;
 
 namespace GoodReads.Infrastructure.Mongo.Repositories
 {
-    public class MongoGenericRepository<TEntity, TId, TIdType> :
-        IRepository<TEntity, TId, TIdType>
+    public class MongoGenericRepository<TEntity, TIdType> :
+        IRepository<TEntity, TIdType>
         where TEntity : Entity<TIdType>
-        where TId : EntityId<TIdType>
     {
         private readonly IMongoContext _context;
 
@@ -29,8 +30,24 @@ namespace GoodReads.Infrastructure.Mongo.Repositories
                 .InsertOneAsync(aggregate, cancellationToken: cancellationToken);
         }
 
-        public async Task<TEntity> GetByIdAsync(
-            TId id,
+        public async Task UpdateAsync(
+            Expression<Func<TEntity, bool>> expression,
+            TEntity entity,
+            CancellationToken cancellationToken
+        )
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await _context.GetCollection<TEntity>()
+                .ReplaceOneAsync(
+                    expression,
+                    entity,
+                    cancellationToken: cancellationToken
+                );
+        }
+
+        public async Task<TEntity?> GetByIdAsync(
+            EntityId<TIdType> id,
             CancellationToken cancellationToken
         )
         {

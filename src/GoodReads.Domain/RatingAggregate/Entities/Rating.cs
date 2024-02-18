@@ -13,6 +13,22 @@ namespace GoodReads.Domain.RatingAggregate.Entities
         public Guid BookId { get; private set; }
 
         private Rating(
+            RatingId id,
+            Score score,
+            string description,
+            Reading reading,
+            Guid userId,
+            Guid bookId
+        ) : base(id)
+        {
+            Score = score;
+            Description = description;
+            Reading = reading;
+            UserId = userId;
+            BookId = bookId;
+        }
+
+        private Rating(
             Score score,
             string description,
             Reading reading,
@@ -46,6 +62,25 @@ namespace GoodReads.Domain.RatingAggregate.Entities
             rating.AddDomainEvent(new RatingCreated(rating));
 
             return rating;
+        }
+
+        public static Rating Instantiate(
+            RatingId id,
+            Score score,
+            string description,
+            Reading reading,
+            Guid userId,
+            Guid bookId
+        )
+        {
+            return new Rating(
+                id,
+                score,
+                description,
+                reading,
+                userId,
+                bookId
+            );
         }
     }
 }
