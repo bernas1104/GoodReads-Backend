@@ -485,3 +485,6 @@ $RECYCLE.BIN/
 
 # Sonarqube
 .sonarqube/
+
+# Appsettings
+appsettings.Development.json
