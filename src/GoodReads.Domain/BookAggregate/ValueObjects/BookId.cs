@@ -2,7 +2,7 @@ using GoodReads.Domain.Common;
 
 namespace GoodReads.Domain.BookAggregate.ValueObjects
 {
-    public sealed class BookId : AggregateRootId<Guid>
+    public sealed class BookId : EntityId<Guid>
     {
         public override Guid Value { get; protected set; }
 

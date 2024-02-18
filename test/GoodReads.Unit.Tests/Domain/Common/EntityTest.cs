@@ -40,6 +40,16 @@ namespace GoodReads.Unit.Tests.Domain.Common
         }
     }
 
+    internal class FooId : EntityId<Guid>
+    {
+        public override Guid Value { get; protected set; }
+
+        public override IEnumerable<object?> GetEqualityComponents()
+        {
+            yield return Value;
+        }
+    }
+
     internal class FooEntity : Entity<Guid>
     {
         //
