@@ -20,6 +20,8 @@ namespace GoodReads.Domain.BookAggregate.ValueObjects
                     default;
             }
         }
+
+        public IReadOnlyDictionary<int, int> Scores { get => _scores.AsReadOnly(); }
         private readonly IDictionary<int, int> _scores = new Dictionary<int, int>
         {
             { 1, 0 },

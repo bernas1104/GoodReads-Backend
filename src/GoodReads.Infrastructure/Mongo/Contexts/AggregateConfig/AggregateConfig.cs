@@ -1,26 +1,27 @@
-using GoodReads.Domain.Common;
+using GoodReads.Domain.Common.MongoDb;
 using GoodReads.Infrastructure.Mongo.Contexts.Interfaces;
 
 using MongoDB.Driver;
 
-namespace GoodReads.Infrastructure.Mongo.Contexts.EntityConfig
+namespace GoodReads.Infrastructure.Mongo.Contexts.AggregateConfig
 {
-    public abstract class EntityConfig<TEntity, TIdType>
-        where TEntity : Entity<TIdType>
+    public abstract class AggregateConfig<TAggregate, TId, TIdType>
+        where TAggregate : AggregateRoot<TId, TIdType>
+        where TId : AggregateRootId<TIdType>
     {
-        protected IndexKeysDefinitionBuilder<TEntity> Builder { get; }
+        protected IndexKeysDefinitionBuilder<TAggregate> Builder { get; }
         private readonly IMongoContext _context;
-        private readonly IMongoCollection<TEntity>? _collection;
-        private readonly List<CreateIndexModel<TEntity>> _newIndexes;
+        private readonly IMongoCollection<TAggregate>? _collection;
+        private readonly List<CreateIndexModel<TAggregate>> _newIndexes;
         private readonly IEnumerable<string?> _existingIndexes = new List<string?>();
 
-        protected EntityConfig(IMongoContext context)
+        protected AggregateConfig(IMongoContext context)
         {
             _context = context;
-            _collection = context.GetCollection<TEntity>();
+            _collection = context.GetCollection<TAggregate>();
             _newIndexes = new ();
 
-            Builder = Builders<TEntity>.IndexKeys;
+            Builder = Builders<TAggregate>.IndexKeys;
 
             if (_collection is not null)
             {
@@ -37,7 +38,7 @@ namespace GoodReads.Infrastructure.Mongo.Contexts.EntityConfig
             indexName ??= "TTL";
             ttlDays ??= _context.LogTtlDays;
 
-            var ttlIndex = new CreateIndexModel<TEntity>(
+            var ttlIndex = new CreateIndexModel<TAggregate>(
                 Builder.Ascending(x => x.CreatedAt),
                 new CreateIndexOptions
                 {
@@ -65,7 +66,7 @@ namespace GoodReads.Infrastructure.Mongo.Contexts.EntityConfig
 
         public abstract void ConfigureIndexes();
 
-        protected void AddIndexes(List<CreateIndexModel<TEntity>> indexes)
+        protected void AddIndexes(List<CreateIndexModel<TAggregate>> indexes)
         {
             _newIndexes.AddRange(indexes);
         }

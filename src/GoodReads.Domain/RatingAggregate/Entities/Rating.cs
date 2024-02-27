@@ -1,4 +1,4 @@
-using GoodReads.Domain.Common;
+using GoodReads.Domain.Common.MongoDb;
 using GoodReads.Domain.RatingAggregate.Events;
 using GoodReads.Domain.RatingAggregate.ValueObjects;
 
@@ -19,8 +19,9 @@ namespace GoodReads.Domain.RatingAggregate.Entities
             Reading reading,
             Guid userId,
             Guid bookId
-        ) : base(id)
+        )
         {
+            Id = id;
             Score = score;
             Description = description;
             Reading = reading;
@@ -34,8 +35,10 @@ namespace GoodReads.Domain.RatingAggregate.Entities
             Reading reading,
             Guid userId,
             Guid bookId
-        ) : base(RatingId.CreateUnique())
+        )
         {
+            Id = RatingId.CreateUnique();
+
             Score = score;
             Description = description;
             Reading = reading;

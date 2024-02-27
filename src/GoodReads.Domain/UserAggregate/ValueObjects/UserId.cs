@@ -1,8 +1,8 @@
-using GoodReads.Domain.Common;
+using GoodReads.Domain.Common.EntityFramework;
 
 namespace GoodReads.Domain.UserAggregate.ValueObjects
 {
-    public sealed class UserId : EntityId<Guid>
+    public sealed class UserId : AggregateRootId<Guid>
     {
         public override Guid Value { get; protected set; }
 

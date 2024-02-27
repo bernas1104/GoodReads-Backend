@@ -1,10 +1,10 @@
-using GoodReads.Domain.Common.MongoDb;
+using GoodReads.Domain.Common;
 
-namespace GoodReads.Domain.RatingAggregate.ValueObjects
+namespace GoodReads.Domain.UserAggregate.ValueObjects
 {
-    public sealed class RatingId : AggregateRootId<Guid>
+    public sealed class RatingId : ValueObject
     {
-        public override Guid Value { get; protected set; }
+        public Guid Value { get; private set; }
 
         private RatingId(Guid value)
         {
@@ -17,7 +17,5 @@ namespace GoodReads.Domain.RatingAggregate.ValueObjects
         }
 
         public static RatingId Create(Guid id) => new RatingId(id);
-
-        public static RatingId CreateUnique() => new RatingId(Guid.NewGuid());
     }
 }

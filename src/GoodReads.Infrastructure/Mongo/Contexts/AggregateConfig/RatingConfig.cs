@@ -1,11 +1,12 @@
 using GoodReads.Domain.RatingAggregate.Entities;
+using GoodReads.Domain.RatingAggregate.ValueObjects;
 using GoodReads.Infrastructure.Mongo.Contexts.Interfaces;
 
 using MongoDB.Driver;
 
-namespace GoodReads.Infrastructure.Mongo.Contexts.EntityConfig
+namespace GoodReads.Infrastructure.Mongo.Contexts.AggregateConfig
 {
-    public sealed class RatingConfig : EntityConfig<Rating, Guid>
+    public sealed class RatingConfig : AggregateConfig<Rating, RatingId, Guid>
     {
         public RatingConfig(IMongoContext context) : base(context)
         {

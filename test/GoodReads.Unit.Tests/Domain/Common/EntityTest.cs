@@ -1,4 +1,4 @@
-using GoodReads.Domain.Common;
+using GoodReads.Domain.Common.EntityFramework;
 using GoodReads.Domain.Common.Interfaces.Events;
 
 namespace GoodReads.Unit.Tests.Domain.Common
@@ -40,7 +40,7 @@ namespace GoodReads.Unit.Tests.Domain.Common
         }
     }
 
-    internal class FooId : EntityId<Guid>
+    internal class FooId : AggregateRootId<Guid>
     {
         public override Guid Value { get; protected set; }
 

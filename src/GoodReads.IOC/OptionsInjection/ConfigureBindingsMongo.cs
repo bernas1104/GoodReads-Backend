@@ -1,4 +1,4 @@
-using GoodReads.Domain.Common.Interfaces.Repositories;
+using GoodReads.Domain.Common.Interfaces.Repositories.MongoDb;
 using GoodReads.Domain.RatingAggregate.Entities;
 using GoodReads.Domain.RatingAggregate.ValueObjects;
 using GoodReads.Infrastructure.Mongo.Contexts;
@@ -38,8 +38,8 @@ namespace GoodReads.IOC.OptionsInjection
         private static void ConfigureMongoRepositories(IServiceCollection services)
         {
             services.AddScoped<
-                IRepository<Rating, Guid>,
-                MongoGenericRepository<Rating, Guid>
+                IRepository<Rating, RatingId, Guid>,
+                GenericRepository<Rating, RatingId, Guid>
             >();
         }
 

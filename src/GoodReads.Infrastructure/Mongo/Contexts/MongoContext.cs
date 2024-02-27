@@ -1,4 +1,4 @@
-using GoodReads.Infrastructure.Mongo.Contexts.EntityConfig;
+using GoodReads.Infrastructure.Mongo.Contexts.AggregateConfig;
 using GoodReads.Infrastructure.Mongo.Contexts.Interfaces;
 using GoodReads.Infrastructure.Mongo.Utils;
 using GoodReads.Infrastructure.Mongo.Utils.Interfaces;

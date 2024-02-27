@@ -1,6 +1,6 @@
 using GoodReads.Domain.BookAggregate.Enums;
 using GoodReads.Domain.BookAggregate.ValueObjects;
-using GoodReads.Domain.Common;
+using GoodReads.Domain.Common.EntityFramework;
 
 #pragma warning disable CS8618
 namespace GoodReads.Domain.BookAggregate.Entities
@@ -15,12 +15,13 @@ namespace GoodReads.Domain.BookAggregate.Entities
         public Gender Gender { get; private set; }
         public BookData BookData { get; private set; }
         public IEnumerable<byte> Cover { get; private set; }
-        public IReadOnlyList<Guid> Ratings { get => _ratings.AsReadOnly(); }
-        private readonly List<Guid> _ratings;
+        public IReadOnlyList<RatingId> RatingIds { get => _ratingIds.AsReadOnly(); }
+        private readonly List<RatingId> _ratingIds;
 
         private Book(string title, string isbn, string author, Gender gender)
-            : base (BookId.CreateUnique())
         {
+            Id = BookId.CreateUnique();
+
             Title = title;
             Isbn = isbn;
             Author = author;
@@ -28,7 +29,7 @@ namespace GoodReads.Domain.BookAggregate.Entities
             MeanScore = new ();
 
             Cover = new List<byte>();
-            _ratings = new List<Guid>();
+            _ratingIds = new List<RatingId>();
         }
 
         public void SetCover(IEnumerable<byte> cover) => Cover = cover;
@@ -43,9 +44,9 @@ namespace GoodReads.Domain.BookAggregate.Entities
             BookData = bookData;
         }
 
-        public void AddRating(Guid ratingId, int ratingScore)
+        public void AddRating(RatingId ratingId, int ratingScore)
         {
-            _ratings.Add(ratingId);
+            _ratingIds.Add(ratingId);
 
             MeanScore.Update(ratingScore);
 

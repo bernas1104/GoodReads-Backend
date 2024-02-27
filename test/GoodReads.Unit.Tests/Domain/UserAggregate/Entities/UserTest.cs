@@ -1,4 +1,5 @@
 using GoodReads.Domain.UserAggregate.Entities;
+using GoodReads.Domain.UserAggregate.ValueObjects;
 
 namespace GoodReads.Unit.Tests.Domain.UserAggregate.Entities
 {
@@ -23,17 +24,18 @@ namespace GoodReads.Unit.Tests.Domain.UserAggregate.Entities
         public void GivenUser_WhenAddRating_ShouldAddRatingToUsersRatingList()
         {
             // arrange
-            var ratingId = Guid.NewGuid();
             var user = new User(
                 name: _faker.Person.FullName,
                 email: _faker.Internet.Email()
             );
 
+            var ratingId = RatingId.Create(Guid.NewGuid());
+
             // act
             user.AddRating(ratingId);
 
             // assert
-            user.Ratings.Count.Should().Be(1);
+            user.RatingIds.Count.Should().Be(1);
         }
     }
 }

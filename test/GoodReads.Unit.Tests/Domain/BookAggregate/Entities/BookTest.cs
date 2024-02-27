@@ -21,13 +21,13 @@ namespace GoodReads.Unit.Tests.Domain.BookAggregate.Entities
             for(var i = 0; i < totalRatings; i++)
             {
                 book.AddRating(
-                    Guid.NewGuid(),
+                    RatingId.Create(Guid.NewGuid()),
                     _faker.Random.Int(1, 5)
                 );
             }
 
             // assert
-            book.Ratings.Count.Should().Be(totalRatings);
+            book.RatingIds.Count.Should().Be(totalRatings);
             book.MeanScore.Should().NotBe(meanScoreEqualityCheck);
         }
     }

@@ -1,59 +1,60 @@
 using System.Linq.Expressions;
 
-using GoodReads.Domain.Common;
-using GoodReads.Domain.Common.Interfaces.Repositories;
+using GoodReads.Domain.Common.Interfaces.Repositories.MongoDb;
+using GoodReads.Domain.Common.MongoDb;
 using GoodReads.Infrastructure.Mongo.Contexts.Interfaces;
 
 using MongoDB.Driver;
 
 namespace GoodReads.Infrastructure.Mongo.Repositories
 {
-    public class MongoGenericRepository<TEntity, TIdType> :
-        IRepository<TEntity, TIdType>
-        where TEntity : Entity<TIdType>
+    public class GenericRepository<TAggregate, TId, TIdType> :
+        IRepository<TAggregate, TId, TIdType>
+        where TAggregate : AggregateRoot<TId, TIdType>
+        where TId : AggregateRootId<TIdType>
     {
         private readonly IMongoContext _context;
 
-        public MongoGenericRepository(IMongoContext context)
+        public GenericRepository(IMongoContext context)
         {
             _context = context;
         }
 
         public async Task AddAsync(
-            TEntity aggregate,
+            TAggregate aggregate,
             CancellationToken cancellationToken
         )
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await _context.GetCollection<TEntity>()
+            await _context.GetCollection<TAggregate>()
                 .InsertOneAsync(aggregate, cancellationToken: cancellationToken);
         }
 
         public async Task UpdateAsync(
-            Expression<Func<TEntity, bool>> expression,
-            TEntity entity,
+            Expression<Func<TAggregate, bool>> expression,
+            TAggregate aggregate,
             CancellationToken cancellationToken
         )
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await _context.GetCollection<TEntity>()
+            await _context.GetCollection<TAggregate>()
                 .ReplaceOneAsync(
                     expression,
-                    entity,
+                    aggregate,
                     cancellationToken: cancellationToken
                 );
         }
 
-        public async Task<TEntity?> GetByIdAsync(
-            EntityId<TIdType> id,
+        public async Task<TAggregate?> GetByIdAsync(
+            AggregateRootId<TIdType> id,
             CancellationToken cancellationToken
         )
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var queryResult = await _context.GetCollection<TEntity>()
+            var queryResult = await _context.GetCollection<TAggregate>()
                 .FindAsync(
                     x => x.Id.Equals(id),
                     cancellationToken: cancellationToken

@@ -8,6 +8,6 @@ namespace GoodReads.Api.Controllers.v1.Books
     public class BooksController : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync() => NoContent();
+        public Task<IActionResult> GetAllAsync() => throw new NotImplementedException();
     }
 }

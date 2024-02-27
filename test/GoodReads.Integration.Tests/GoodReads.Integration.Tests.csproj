@@ -38,4 +38,10 @@
     <ProjectReference Include="..\GoodReads.Shared\GoodReads.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="appsettings.Test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>  
+  </ItemGroup>
+
 </Project>

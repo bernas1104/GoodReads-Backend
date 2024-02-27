@@ -1,4 +1,4 @@
-using GoodReads.Domain.Common;
+using GoodReads.Domain.Common.EntityFramework;
 using GoodReads.Domain.UserAggregate.ValueObjects;
 
 namespace GoodReads.Domain.UserAggregate.Entities
@@ -7,20 +7,37 @@ namespace GoodReads.Domain.UserAggregate.Entities
     {
         public string Name { get; private set; }
         public string Email { get; private set; }
-        public IReadOnlyList<Guid> Ratings { get => _ratings.AsReadOnly(); }
-        private readonly List<Guid> _ratings;
+        public IReadOnlyList<RatingId> RatingIds { get => _ratingIds.AsReadOnly(); }
+        private readonly List<RatingId> _ratingIds;
 
-        public User(string name, string email) : base(UserId.CreateUnique())
+        public User(string name, string email)
         {
+            Id = UserId.CreateUnique();
+
             Name = name;
             Email = email;
 
-            _ratings = new List<Guid>();
+            _ratingIds = new List<RatingId>();
         }
 
-        public void AddRating(Guid ratingId)
+        public User(UserId id, string name, string email)
         {
-            _ratings.Add(ratingId);
+            Id = id;
+            Name = name;
+            Email = email;
+
+            _ratingIds = new List<RatingId>();
+        }
+
+        public void AddRating(RatingId ratingId)
+        {
+            _ratingIds.Add(ratingId);
+        }
+
+        public void UpdateName(string name)
+        {
+            Name = name;
+            Update();
         }
     }
 }

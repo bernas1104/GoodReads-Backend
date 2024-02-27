@@ -1,4 +1,4 @@
-using GoodReads.Domain.Common.Interfaces.Repositories;
+using GoodReads.Domain.Common.Interfaces.Repositories.MongoDb;
 using GoodReads.Domain.RatingAggregate.Entities;
 using GoodReads.Domain.RatingAggregate.ValueObjects;
 
@@ -11,9 +11,9 @@ namespace GoodReads.Api.Controllers.v1.Ratings
     [Produces("application/json")]
     public class RatingsController : ControllerBase
     {
-        private readonly IRepository<Rating, Guid> _repository;
+        private readonly IRepository<Rating, RatingId, Guid> _repository;
 
-        public RatingsController(IRepository<Rating, Guid> repository)
+        public RatingsController(IRepository<Rating, RatingId, Guid> repository)
         {
             _repository = repository;
         }

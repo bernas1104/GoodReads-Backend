@@ -1,4 +1,4 @@
-using GoodReads.Domain.Common.Interfaces.Repositories;
+using GoodReads.Domain.Common.Interfaces.Repositories.MongoDb;
 using GoodReads.Domain.RatingAggregate.Entities;
 using GoodReads.Domain.RatingAggregate.ValueObjects;
 using GoodReads.Infrastructure.Mongo.Contexts;
@@ -14,7 +14,7 @@ using Testcontainers.MongoDb;
 
 namespace GoodReads.Integration.Tests.Infrastructure.Mongo
 {
-    public class MongoGenericRepositoryTest : IDisposable
+    public class MongoGenericRepositoryTest : IAsyncLifetime
     {
         private readonly MongoDbContainer _mongo = new MongoDbBuilder()
             .Build();
@@ -25,7 +25,7 @@ namespace GoodReads.Integration.Tests.Infrastructure.Mongo
         {
             // arrange
             var rating = RatingMock.Get();
-            var repository = await GetRepository();
+            var repository = GetRepository();
 
             // act
             await repository.AddAsync(rating, default);
@@ -46,7 +46,7 @@ namespace GoodReads.Integration.Tests.Infrastructure.Mongo
             // arrange
             var ratingId = RatingId.CreateUnique();
             var rating = RatingMock.Get(ratingId);
-            var repository = await GetRepository();
+            var repository = GetRepository();
 
             await repository.AddAsync(rating, default);
 
@@ -67,17 +67,9 @@ namespace GoodReads.Integration.Tests.Infrastructure.Mongo
             rating.Description.Should().NotBe(updatedRating.Description);
         }
 
-        private async Task<IRepository<Rating, Guid>> GetRepository()
+        private GenericRepository<Rating, RatingId, Guid> GetRepository()
         {
-            await _mongo.StartAsync();
-
             var connectionString = _mongo.GetConnectionString();
-
-            using var loggerFactory = LoggerFactory.Create(
-                builder => builder.AddFilter(
-                    typeof(MongoConnection).FullName, LogLevel.Trace
-                ).AddConsole()
-            );
 
             var options = Options.Create(
                 new MongoConnectionOptions
@@ -88,28 +80,21 @@ namespace GoodReads.Integration.Tests.Infrastructure.Mongo
                 }
             );
 
-            var logger = loggerFactory.CreateLogger<MongoConnection>();
             var connection = new MongoConnection(options);
 
             _context = new MongoContext(connection, options);
 
-            return new MongoGenericRepository<Rating, Guid>(_context);
+            return new GenericRepository<Rating, RatingId, Guid>(_context);
         }
 
-        public void Dispose()
+        public async Task InitializeAsync()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            await _mongo.StartAsync();
         }
 
-        protected virtual void Dispose(bool disposing)
+        public async Task DisposeAsync()
         {
-            if (disposing)
-            {
-                _mongo.DisposeAsync()
-                    .AsTask()
-                    .Wait();
-            }
+            await _mongo.DisposeAsync().AsTask();
         }
     }
 }
