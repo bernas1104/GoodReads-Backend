@@ -12,9 +12,12 @@ namespace GoodReads.Unit.Tests.Helpers
             logger.ShouldHaveLogged(LogLevel.Information, logMessage);
         }
 
-        public static void ShouldHaveLoggedWarning()
+        public static void ShouldHaveLoggedWarning(
+            this ILogger logger,
+            string logMessage
+        )
         {
-            //
+            logger.ShouldHaveLogged(LogLevel.Warning, logMessage);
         }
 
         public static void ShouldHaveLoggedError(
