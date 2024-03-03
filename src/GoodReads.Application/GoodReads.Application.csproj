@@ -12,4 +12,8 @@
     <PackageReference Include="MediatR" Version="12.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GoodReads.Domain\GoodReads.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -14,6 +14,7 @@ namespace GoodReads.IOC
         {
             ConfigureBindingsMongo.RegisterBindings(services, configuration);
             ConfigureBindingsEntityFramework.RegisterBindings(services, configuration);
+            ConfigureBindingsMediatR.RegisterBindings(services, configuration);
         }
     }
 }

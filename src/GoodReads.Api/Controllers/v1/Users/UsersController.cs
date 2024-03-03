@@ -1,6 +1,10 @@
-using GoodReads.Domain.Common.Interfaces.Repositories.EntityFramework;
-using GoodReads.Domain.UserAggregate.Entities;
-using GoodReads.Domain.UserAggregate.ValueObjects;
+using GoodReads.Application.Features.Users.Create;
+using GoodReads.Application.Features.Users.Delete;
+using GoodReads.Application.Features.Users.GetById;
+using GoodReads.Application.Features.Users.GetPaginated;
+using GoodReads.Application.Features.Users.Update;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,25 +13,46 @@ namespace GoodReads.Api.Controllers.v1.Users
     [ApiController]
     [Route("v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
-    public class UsersController : ControllerBase
+    public sealed class UsersController : ControllerBase
     {
-        private readonly IRepository<User, UserId, Guid> _repository;
+        private readonly ISender _sender;
 
-        public UsersController(IRepository<User, UserId, Guid> repository)
+        public UsersController(ISender sender)
         {
-            _repository = repository;
+            _sender = sender;
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetAllAsync(
-            [FromBody] UserRequest request,
+        public async Task<IActionResult> CreateAsync(
+            [FromBody] CreateUserRequest request,
             CancellationToken cancellationToken
         )
         {
-            var user = new User(request.Name, request.Email);
-            await _repository.AddAsync(user, cancellationToken);
+            var result = await _sender.Send(
+                request,
+                cancellationToken
+            );
 
-            return Ok(user);
+            return CreatedAtAction(
+                nameof(GetByIdAsync),
+                new { id = result.Value },
+                result
+            );
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPaginatedAsync(
+            [FromQuery] int page,
+            [FromQuery] int size,
+            CancellationToken cancellationToken
+        )
+        {
+            var result = await _sender.Send(
+                new GetPaginatedUsersRequest(page, size),
+                cancellationToken
+            );
+
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -36,10 +61,44 @@ namespace GoodReads.Api.Controllers.v1.Users
             CancellationToken cancellationToken
         )
         {
-            var user = await _repository.GetByIdAsync(UserId.Create(id), cancellationToken);
-            return Ok(user);
+            var result = await _sender.Send(
+                new GetUserByIdRequest(id),
+                cancellationToken
+            );
+
+            return Ok(result);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateAsync(
+            [FromRoute] Guid id,
+            [FromBody] UpdateUserRequest request,
+            CancellationToken cancellationToken
+        )
+        {
+            request = new UpdateUserRequest(id, request.Name, request.Email);
+
+            var result = await _sender.Send(request, cancellationToken);
+
+            return result.IsError ?
+                BadRequest(result) :
+                NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(
+            [FromRoute] Guid id,
+            CancellationToken cancellationToken
+        )
+        {
+            var result = await _sender.Send(
+                new DeleteUserRequest(id),
+                cancellationToken
+            );
+
+            return result.IsError ?
+                BadRequest(result) :
+                NoContent();
         }
     }
-
-    public record UserRequest(string Name, string Email);
 }
