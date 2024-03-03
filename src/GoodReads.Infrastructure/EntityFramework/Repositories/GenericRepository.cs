@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 using GoodReads.Domain.Common.EntityFramework;
 
 using GoodReads.Domain.Common.Interfaces.Repositories.EntityFramework;
@@ -53,6 +55,41 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
             _set.Update(aggregate);
             await SaveChanges(cancellationToken);
         }
+
+        public Task<TAggregate?> GetByFilterAsync(
+            Expression<Func<TAggregate, bool>> expression,
+            CancellationToken cancellationToken
+        )
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return _set.FirstOrDefaultAsync(
+                expression,
+                cancellationToken
+            );
+        }
+
+        public async Task<IEnumerable<TAggregate>> GetPaginatedAsync(
+            int page,
+            int pageSize,
+            CancellationToken cancellationToken
+        )
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return await _set.AsNoTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public Task<int> GetCountAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return _set.CountAsync(cancellationToken);
+        }
+
 
         private Task<int> SaveChanges(CancellationToken cancellationToken)
         {

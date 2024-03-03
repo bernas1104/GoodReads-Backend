@@ -78,6 +78,80 @@ namespace GoodReads.Integration.Tests.Infrastructure.EntityFramework.Repositorie
             user.Email.Should().Be(updatedUser.Email);
         }
 
+        [Fact]
+        public async Task GivenEntityRepository_WhenGetByFilter_ShouldReturnFirstOrDefault()
+        {
+            // arrange
+            var user = UserMock.Get();
+            var userEmail = user.Email;
+            var repository = GetRepository();
+
+            await repository.AddAsync(user, CancellationToken.None);
+
+            // act
+            var result = await repository.GetByFilterAsync(
+                u => u.Email == userEmail,
+                CancellationToken.None
+            );
+
+            // assert
+            result.Should().NotBeNull();
+            result!.Email.Should().Be(userEmail);
+        }
+
+        [Fact]
+        public async Task GivenEntityRepository_WhenGetPaginated_ShouldReturnEntitiesPage()
+        {
+            // arrange
+            var repository = GetRepository();
+            var users = new List<User>
+            {
+                UserMock.Get(),
+                UserMock.Get(),
+                UserMock.Get()
+            };
+
+            foreach (var user in users)
+            {
+                await repository.AddAsync(user, CancellationToken.None);
+            }
+
+            // act
+            var result = await repository.GetPaginatedAsync(
+                page: 3,
+                pageSize: 1,
+                CancellationToken.None
+            );
+
+            // assert
+            result.Should().NotBeNull();
+            result.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public async Task GivenEntityRepository_WhenGetCount_ShouldReturnEntityCount()
+        {
+            // arrange
+            var repository = GetRepository();
+            var users = new List<User>
+            {
+                UserMock.Get(),
+                UserMock.Get(),
+                UserMock.Get()
+            };
+
+            foreach (var user in users)
+            {
+                await repository.AddAsync(user, CancellationToken.None);
+            }
+
+            // act
+            var result = await repository.GetCountAsync(CancellationToken.None);
+
+            // assert
+            result.Should().Be(3);
+        }
+
         private IRepository<User, UserId, Guid> GetRepository()
         {
             var connectionString = _msSql.GetConnectionString();
