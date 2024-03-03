@@ -12,13 +12,13 @@ namespace GoodReads.Shared.Mocks
     [ExcludeFromCodeCoverage]
     public static class MongoMock
     {
-        public static IMongoConnection GetMongoConnection()
+        public static IMongoConnection GetMongoConnection(
+            IOptions<MongoConnectionOptions>? options = null
+        )
         {
-            return new Faker<IMongoConnection>().CustomInstantiator(f => {
-                var options = GetMongoOptions();
-
-                return new MongoConnection(options);
-            }).Generate();
+            return new Faker<IMongoConnection>().CustomInstantiator(f => (
+                new MongoConnection(options ?? GetMongoOptions())
+            )).Generate();
         }
 
         public static IOptions<MongoConnectionOptions> GetMongoOptions(

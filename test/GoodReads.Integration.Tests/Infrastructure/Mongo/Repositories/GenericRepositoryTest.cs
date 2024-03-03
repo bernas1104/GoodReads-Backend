@@ -1,4 +1,3 @@
-using GoodReads.Domain.Common.Interfaces.Repositories.MongoDb;
 using GoodReads.Domain.RatingAggregate.Entities;
 using GoodReads.Domain.RatingAggregate.ValueObjects;
 using GoodReads.Infrastructure.Mongo.Contexts;
@@ -7,7 +6,6 @@ using GoodReads.Infrastructure.Mongo.Repositories;
 using GoodReads.Infrastructure.Mongo.Utils;
 using GoodReads.Shared.Mocks;
 
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using Testcontainers.MongoDb;
