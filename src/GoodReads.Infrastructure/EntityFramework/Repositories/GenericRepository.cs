@@ -90,6 +90,14 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
             return _set.CountAsync(cancellationToken);
         }
 
+        public async Task RemoveAsync(TAggregate aggregate, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            _set.Remove(aggregate);
+
+            await SaveChanges(cancellationToken);
+        }
 
         private Task<int> SaveChanges(CancellationToken cancellationToken)
         {
