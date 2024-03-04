@@ -64,7 +64,8 @@ namespace GoodReads.Integration.Tests.Infrastructure.EntityFramework.Repositorie
 
             await repository.AddAsync(user, default);
 
-            user.UpdateName(new Faker().Person.FullName);
+            var faker = new Faker();
+            user.Update(faker.Person.FullName, faker.Internet.Email());
 
             // act
             await repository.UpdateAsync(user, default);

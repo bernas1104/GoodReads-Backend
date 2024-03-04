@@ -14,18 +14,18 @@ namespace GoodReads.Shared.Mocks
     [ExcludeFromCodeCoverage]
     public static class UserMock
     {
-        public static User Get(UserId? id = null)
+        public static User Get(UserId? id = null, string? email = null)
         {
             return new Faker<User>().CustomInstantiator(f => (
                 id is null ?
                     new User(
                         name: f.Person.FullName,
-                        email: f.Internet.Email()
+                        email: email ?? f.Internet.Email()
                     ) :
                     new User(
                         id: id,
                         name: f.Person.FullName,
-                        email: f.Internet.Email()
+                        email: email ?? f.Internet.Email()
                     )
             ));
         }

@@ -34,9 +34,10 @@ namespace GoodReads.Domain.UserAggregate.Entities
             _ratingIds.Add(ratingId);
         }
 
-        public void UpdateName(string name)
+        public void Update(string name, string email)
         {
             Name = name;
+            Email = email;
             Update();
         }
     }
