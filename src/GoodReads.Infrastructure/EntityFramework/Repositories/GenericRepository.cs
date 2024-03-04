@@ -42,7 +42,9 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
             cancellationToken.ThrowIfCancellationRequested();
 
             return _set.FirstOrDefaultAsync(
-                x => x.Id.Equals(id), cancellationToken);
+                x => x.Id.Equals(id) && x.DeletedAt == null,
+                cancellationToken
+            );
         }
 
         public async Task UpdateAsync(
@@ -78,6 +80,7 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
             cancellationToken.ThrowIfCancellationRequested();
 
             return await _set.AsNoTracking()
+                .Where(a => a.DeletedAt == null)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

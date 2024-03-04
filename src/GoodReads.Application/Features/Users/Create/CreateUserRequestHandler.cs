@@ -33,7 +33,8 @@ namespace GoodReads.Application.Features.Users.Create
             cancellationToken.ThrowIfCancellationRequested();
 
             var user = await _repository.GetByFilterAsync(
-                u => u.Email == request.Email,
+                u => u.Email == request.Email &&
+                    u.DeletedAt == null,
                 cancellationToken
             );
 

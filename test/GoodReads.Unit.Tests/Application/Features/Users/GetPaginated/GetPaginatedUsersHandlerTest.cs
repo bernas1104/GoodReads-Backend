@@ -41,7 +41,7 @@ namespace GoodReads.Unit.Tests.Application.Features.Users.GetPaginated
             response.Data.Should().HaveCount(1);
             response.CurrentPage.Should().Be(request.Page);
             response.TotalItens.Should().Be(count);
-            response.TotalPages.Should().Be(count / request.Size);
+            response.TotalPages.Should().Be((int)Math.Ceiling(count / (decimal)request.Size));
             response.PageSize.Should().Be(request.Size);
         }
     }

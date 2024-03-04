@@ -37,7 +37,7 @@ namespace GoodReads.Application.Features.Users.GetPaginated
                 ),
                 CurrentPage: request.Page,
                 TotalItens: count,
-                TotalPages: count / request.Size,
+                TotalPages: (int)Math.Ceiling(count / (decimal)request.Size),
                 PageSize: request.Size
             );
         }

@@ -44,7 +44,9 @@ namespace GoodReads.Application.Features.Users.Update
             }
 
             var differentUser = await _repository.GetByFilterAsync(
-                u => !u.Id.Equals(userId) && u.Email == request.Email,
+                u => !u.Id.Equals(userId) &&
+                    u.Email == request.Email &&
+                    u.DeletedAt == null,
                 cancellationToken
             );
 
