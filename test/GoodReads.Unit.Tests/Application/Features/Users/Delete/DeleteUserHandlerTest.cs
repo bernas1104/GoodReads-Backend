@@ -64,7 +64,7 @@ namespace GoodReads.Unit.Tests.Application.Features.Users.Delete
             response!.IsError.Should().BeFalse();
 
             await _repository.Received()
-                .RemoveAsync(
+                .UpdateAsync(
                     Arg.Is<User>(u => u.Id.Equals(user.Id)),
                     Arg.Any<CancellationToken>()
                 );

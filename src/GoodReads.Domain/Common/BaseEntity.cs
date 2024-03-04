@@ -8,6 +8,7 @@ namespace GoodReads.Domain.Common
     {
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
+        public DateTime? DeletedAt { get; private set; }
         [JsonIgnore]
         public IReadOnlyList<IDomainEvent> DomainEvents { get => _domainEvents.AsReadOnly(); }
         private readonly List<IDomainEvent> _domainEvents = new ();
@@ -16,9 +17,12 @@ namespace GoodReads.Domain.Common
         {
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
+            DeletedAt = default;
         }
 
         protected virtual void Update() => UpdatedAt = DateTime.UtcNow;
+
+        public void Delete() => DeletedAt = DateTime.UtcNow;
 
         public void AddDomainEvent(IDomainEvent domainEvent) =>
             _domainEvents.Add(domainEvent);

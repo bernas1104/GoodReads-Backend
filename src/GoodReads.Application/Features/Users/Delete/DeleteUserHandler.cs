@@ -42,7 +42,9 @@ namespace GoodReads.Application.Features.Users.Delete
                 return UserNotFoundError(request);
             }
 
-            await _repository.RemoveAsync(user, cancellationToken);
+            user.Delete();
+
+            await _repository.UpdateAsync(user, cancellationToken);
 
             _logger.LogInformation("User ({UserId}) was deleted", user.Id.Value);
 
