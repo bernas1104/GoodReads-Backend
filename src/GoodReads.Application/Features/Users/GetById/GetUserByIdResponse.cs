@@ -4,6 +4,9 @@ namespace GoodReads.Application.Features.Users.GetById
         string Name,
         string Email,
         int TotalRatings,
+        UserRatingIdsResponse Ratings,
         DateTime CreatedAt
     ) : UserResponse(Name, TotalRatings);
+
+    public sealed record UserRatingIdsResponse(IEnumerable<Guid> RatingIds);
 }

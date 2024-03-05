@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 
 using GoodReads.IOC;
 using System.Diagnostics.CodeAnalysis;
+using GoodReads.Api.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers(x => x.SuppressAsyncSuffixInActionNames = false);
+builder.Services.AddMvc(c => c.Filters.Add<ErrorOrResponseFilter>());
 builder.Services.AddEndpointsApiExplorer();
 
 const int defaultApiVersion = 1;

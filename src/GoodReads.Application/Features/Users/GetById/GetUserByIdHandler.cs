@@ -46,6 +46,7 @@ namespace GoodReads.Application.Features.Users.GetById
                 user.Name,
                 user.Email,
                 user.RatingIds.Count,
+                new UserRatingIdsResponse(user.RatingIds.Select(r => r.Value)),
                 user.CreatedAt
             );
         }

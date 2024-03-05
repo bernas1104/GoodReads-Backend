@@ -84,6 +84,7 @@ namespace GoodReads.Shared.Mocks
                     Name: name ?? f.Person.FullName,
                     Email: email ?? f.Internet.Email(),
                     TotalRatings: totalRatings ?? f.Random.Int(0, 100),
+                    Ratings: new UserRatingIdsResponse(new List<Guid> { Guid.NewGuid() }),
                     CreatedAt: DateTime.UtcNow
                 )
             ));
