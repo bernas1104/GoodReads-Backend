@@ -1,5 +1,3 @@
-using GoodReads.Infrastructure.EntityFramework.Contexts;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;

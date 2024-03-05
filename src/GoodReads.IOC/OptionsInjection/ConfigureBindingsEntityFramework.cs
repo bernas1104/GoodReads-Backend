@@ -43,12 +43,6 @@ namespace GoodReads.IOC.OptionsInjection
                 IRepository<Book, BookId, Guid>,
                 GenericRepository<BooksContext, Book, BookId, Guid>
             >();
-
-            // TODO - Test Generic DI
-            // services.AddScoped(
-            //     typeof(IRepository<,,>),
-            //     typeof(GenericRepository<,,,>)
-            // );
         }
     }
 }
