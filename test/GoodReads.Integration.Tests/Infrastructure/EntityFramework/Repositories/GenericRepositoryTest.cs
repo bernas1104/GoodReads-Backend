@@ -20,7 +20,7 @@ namespace GoodReads.Integration.Tests.Infrastructure.EntityFramework.Repositorie
 {
     public partial class GenericRepositoryTest : IAsyncLifetime
     {
-        [GeneratedRegex("#ConnectionString#")]
+        [GeneratedRegex("#EFConnectionString#")]
         private static partial Regex ConnectionStringRegex();
         private static string AddConnectionString(string input, string connectionString) =>
             ConnectionStringRegex().Replace(input, connectionString);
