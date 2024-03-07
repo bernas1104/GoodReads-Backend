@@ -55,7 +55,7 @@ namespace GoodReads.Unit.Tests.Api.Controllers.v1.Users
         }
 
         [Fact]
-        public async Task GivenGetAllAsync_ShouldReturnOk()
+        public async Task GivenGetPaginatedAsync_ShouldReturnOk()
         {
             // arrange
             var request = UserMock.GetPaginatedUsersRequest();

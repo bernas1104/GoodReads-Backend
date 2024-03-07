@@ -28,10 +28,7 @@ namespace GoodReads.Api.Controllers.v1.Users
             CancellationToken cancellationToken
         )
         {
-            var result = await _sender.Send(
-                request,
-                cancellationToken
-            );
+            var result = await _sender.Send(request, cancellationToken);
 
             return CreatedAtAction(
                 nameof(GetByIdAsync),

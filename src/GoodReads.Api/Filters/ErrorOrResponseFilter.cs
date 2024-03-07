@@ -63,13 +63,13 @@ namespace GoodReads.Api.Filters
 
         private int GetStatusCode(Error error)
         {
-            var typeCode = error.Code.Substring(error.Code.IndexOf(".") + 1);
+            var errorType = error.Type;
 
-            switch (typeCode)
+            switch (errorType)
             {
-                case "NotFound":
+                case ErrorType.NotFound:
                     return (int)HttpStatusCode.NotFound;
-                case "Conflict":
+                case ErrorType.Conflict:
                     return (int)HttpStatusCode.Conflict;
                 default:
                     return (int)HttpStatusCode.InternalServerError;
