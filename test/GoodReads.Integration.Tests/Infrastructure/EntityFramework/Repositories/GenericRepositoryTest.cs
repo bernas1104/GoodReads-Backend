@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 using Bogus;
 
 using GoodReads.Domain.Common.Interfaces.Repositories.EntityFramework;
@@ -20,11 +18,6 @@ namespace GoodReads.Integration.Tests.Infrastructure.EntityFramework.Repositorie
 {
     public partial class GenericRepositoryTest : IAsyncLifetime
     {
-        [GeneratedRegex("#EFConnectionString#")]
-        private static partial Regex ConnectionStringRegex();
-        private static string AddConnectionString(string input, string connectionString) =>
-            ConnectionStringRegex().Replace(input, connectionString);
-
         private readonly MsSqlContainer _msSql = new MsSqlBuilder()
             .WithImage("mcr.microsoft.com/mssql/server:2019-latest")
             .WithPortBinding(1434, 1433)
@@ -157,11 +150,15 @@ namespace GoodReads.Integration.Tests.Infrastructure.EntityFramework.Repositorie
         {
             var connectionString = _msSql.GetConnectionString();
 
-            SetupAppsettings(connectionString);
-
             var services = new ServiceCollection();
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.Test.json")
+                .AddInMemoryCollection(
+                    new Dictionary<string, string?>
+                    {
+                        { "EntityFramework:ConnectionString", connectionString },
+                        { "EntityFramework:Schema", "dbo" }
+                    }
+                )
                 .Build();
 
             EntityFrameworkConnection
@@ -182,19 +179,6 @@ namespace GoodReads.Integration.Tests.Infrastructure.EntityFramework.Repositorie
             context.Database.Migrate();
 
             return provider.GetRequiredService<IRepository<User, UserId, Guid>>();
-        }
-
-        private static void SetupAppsettings(string connectionString)
-        {
-            var stream = new StreamReader("appsettings.Test.json");
-            var content = stream.ReadToEnd();
-            stream.Close();
-
-            content = AddConnectionString(content, connectionString);
-
-            StreamWriter writer = new StreamWriter("appsettings.Test.json");
-            writer.Write(content);
-            writer.Close();
         }
 
         public async Task InitializeAsync()

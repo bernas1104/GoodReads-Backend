@@ -20,6 +20,7 @@
     <PackageReference Include="Testcontainers" Version="3.7.0" />
     <PackageReference Include="Testcontainers.MongoDb" Version="3.7.0" />
     <PackageReference Include="Testcontainers.MsSql" Version="3.7.0" />
+    <PackageReference Include="Testcontainers.Redis" Version="3.7.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -37,12 +38,6 @@
     <ProjectReference Include="..\..\src\GoodReads.Infrastructure\GoodReads.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\GoodReads.IOC\GoodReads.IOC.csproj" />
     <ProjectReference Include="..\GoodReads.Shared\GoodReads.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="appsettings.Test.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>  
   </ItemGroup>
 
 </Project>
