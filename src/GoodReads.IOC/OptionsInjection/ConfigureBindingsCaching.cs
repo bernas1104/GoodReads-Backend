@@ -24,9 +24,11 @@ namespace GoodReads.IOC.OptionsInjection
             var connection = section.Get<CacheConfig>();
             var connectionString = connection?.RedisConnectionString;
 
+            services.Configure<CacheConfig>(section);
+
             services.AddStackExchangeRedisCache(
                 options => options.Configuration = configuration
-                    .GetConnectionString(connectionString!)
+                    .GetConnectionString(connectionString!)!
             );
 
             services.AddMemoryCache();

@@ -4,7 +4,7 @@ namespace GoodReads.Application.Common.Configurations
     {
         public const string Redis = "Redis";
         public string RedisConnectionString { get; init; } = string.Empty;
-        public bool RedisEnabled { get; init; } = false;
+        public bool RedisEnabled { get; init; }
         public int CacheDurationInMinutes { get; init; }
     }
 }
