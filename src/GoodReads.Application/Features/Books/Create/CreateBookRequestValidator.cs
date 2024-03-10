@@ -1,9 +1,12 @@
+using System.Diagnostics.CodeAnalysis;
+
 using FluentValidation;
 
 using GoodReads.Domain.BookAggregate.Enums;
 
 namespace GoodReads.Application.Features.Books.Create
 {
+    [ExcludeFromCodeCoverage]
     public sealed class CreateBookRequestValidator : AbstractValidator<CreateBookRequest>
     {
         public CreateBookRequestValidator()
@@ -22,6 +25,7 @@ namespace GoodReads.Application.Features.Books.Create
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public sealed class BookDataRequestValidator : AbstractValidator<BookDataRequest>
     {
         public BookDataRequestValidator()
