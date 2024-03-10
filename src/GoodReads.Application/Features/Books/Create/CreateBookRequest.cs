@@ -12,13 +12,11 @@ namespace GoodReads.Application.Features.Books.Create
         int Gender,
         BookDataRequest BookData,
         byte[] Cover
-    ) : BookRequest(
-        Title,
-        Description,
-        Isbn,
-        Author,
-        Gender,
-        BookData,
-        Cover
-    ), IRequest<ErrorOr<Guid>>;
+    ) : IRequest<ErrorOr<Guid>>;
+
+    public sealed record BookDataRequest(
+        string Publisher,
+        int YearOfPublication,
+        int Pages
+    );
 }

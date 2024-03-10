@@ -32,13 +32,13 @@ namespace GoodReads.Shared.Mocks
             );
         }
 
-        public static CreateBookRequest GetCreateBookRequest()
+        public static CreateBookRequest GetCreateBookRequest(string? isbn = null)
         {
             return new Faker<CreateBookRequest>().CustomInstantiator(f => (
                 new CreateBookRequest(
                     Title: f.Random.String2(10),
                     Description: f.Random.String2(20),
-                    Isbn: f.Random.String2(10),
+                    Isbn: isbn ?? f.Random.String2(10),
                     Author: f.Person.FullName,
                     Gender: f.Random.Int(0, 5),
                     BookData: new BookDataRequest
