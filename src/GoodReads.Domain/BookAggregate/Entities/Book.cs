@@ -53,6 +53,14 @@ namespace GoodReads.Domain.BookAggregate.Entities
             Update();
         }
 
+        public void Update(string description, byte[] cover)
+        {
+            Description = description;
+            Cover = cover;
+
+            Update();
+        }
+
         public static Book Create(
             string title,
             string isbn,
