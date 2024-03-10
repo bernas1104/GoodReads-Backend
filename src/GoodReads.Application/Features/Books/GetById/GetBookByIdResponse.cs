@@ -2,6 +2,7 @@ namespace GoodReads.Application.Features.Books.GetById
 {
     public record GetBookByIdResponse(
         string Title,
+        string Description,
         string Isbn,
         string Author,
         decimal MeanScore,
