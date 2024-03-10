@@ -9,7 +9,7 @@ using GoodReads.Unit.Tests.Helpers;
 
 using Microsoft.Extensions.Logging;
 
-namespace GoodReads.Unit.Tests.Application.Features.Books
+namespace GoodReads.Unit.Tests.Application.Features.Books.Create
 {
     public class CreateBookHandlerTest
     {
