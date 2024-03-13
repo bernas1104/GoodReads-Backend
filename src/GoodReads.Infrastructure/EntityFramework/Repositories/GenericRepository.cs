@@ -89,7 +89,7 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
                 .Where(expression)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
 
         public Task<int> GetCountAsync(CancellationToken cancellationToken = default)
@@ -115,7 +115,7 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
             return _context.SaveChangesAsync(cancellationToken);
         }
 
-        private Expression<Func<TAggregate, bool>> GetEmptyFilter() =>
+        private static Expression<Func<TAggregate, bool>> GetEmptyFilter() =>
             x => true;
     }
 }

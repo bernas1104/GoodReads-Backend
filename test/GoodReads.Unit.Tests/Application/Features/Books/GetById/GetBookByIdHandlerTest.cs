@@ -23,7 +23,7 @@ namespace GoodReads.Unit.Tests.Application.Features.Books.GetById
         }
 
         [Fact]
-        public async Task GivenGetBookByIdRequest_WhenBookNotFound_ShouldRetornErrorNotFound()
+        public async Task GivenGetBookByIdRequest_WhenBookNotFound_ShouldReturnErrorNotFound()
         {
             // arrange
             var bookId = Guid.NewGuid();

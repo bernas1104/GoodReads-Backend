@@ -67,7 +67,7 @@ namespace GoodReads.Application.Features.Books.Create
             );
         }
 
-        private BookBuilder BuildBook(CreateBookRequest request)
+        private static BookBuilder BuildBook(CreateBookRequest request)
         {
             var builder = new BookBuilder(
                 title: request.Title,

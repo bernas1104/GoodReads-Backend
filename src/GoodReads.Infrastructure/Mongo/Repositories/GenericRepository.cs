@@ -91,7 +91,7 @@ namespace GoodReads.Infrastructure.Mongo.Repositories
             var aggregate = await _context.GetCollection<TAggregate>()
                 .Aggregate()
                 .Facet(countFacet)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken);
 
             return aggregate.GetCount();
         }

@@ -1,14 +1,14 @@
 # Migrations
 - Users
 ```bash
-dotnet ef --project src/GoodReads.Infrastructure -s src/GoodReads.Api migrations add InitialUsersMigration --context UsersContext -o ./EntityFramework/Migrations/Users;
+dotnet ef --project src/GoodReads.Infrastructure -s src/GoodReads.Api migrations add \<UserMigrationName\> --context UsersContext -o ./EntityFramework/Migrations/Users;
 
 dotnet ef --project src/GoodReads.Infrastructure -s src/GoodReads.Api database update --context UsersContext;
 ```
 
 - Books
 ```bash
-dotnet ef --project src/GoodReads.Infrastructure -s src/GoodReads.Api migrations add InitialBooksMigration --context BooksContext -o ./EntityFramework/Migrations/Books;
+dotnet ef --project src/GoodReads.Infrastructure -s src/GoodReads.Api migrations add \<BookMigrationName\> --context BooksContext -o ./EntityFramework/Migrations/Books;
 
 dotnet ef --project src/GoodReads.Infrastructure -s src/GoodReads.Api database update --context BooksContext;
 ```

@@ -50,18 +50,18 @@ namespace GoodReads.Api.Filters
             // Noop
         }
 
-        private bool IsErrorOrResponse(object response) => response.GetType()
+        private static bool IsErrorOrResponse(object response) => response.GetType()
             .Namespace!.Equals("ErrorOr");
 
-        private bool IsError(object response) => (bool)response.GetType()
+        private static bool IsError(object response) => (bool)response.GetType()
             .GetProperty("IsError")!
             .GetValue(response)!;
 
-        private Error GetError(object response) => (Error)response.GetType()
+        private static Error GetError(object response) => (Error)response.GetType()
             .GetProperty("FirstError")!
             .GetValue(response)!;
 
-        private int GetStatusCode(Error error)
+        private static int GetStatusCode(Error error)
         {
             var errorType = error.Type;
 
@@ -76,7 +76,7 @@ namespace GoodReads.Api.Filters
             }
         }
 
-        private object GetValue(object response) => response.GetType()
+        private static object GetValue(object response) => response.GetType()
             .GetProperty("Value")!
             .GetValue(response)!;
     }
