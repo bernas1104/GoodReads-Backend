@@ -84,6 +84,18 @@ namespace GoodReads.Infrastructure.Mongo.Repositories
             return aggregate.GetData<TAggregate>();
         }
 
+        public async Task<long> GetCountAsync(CancellationToken cancellationToken = default)
+        {
+            var countFacet = GetCountFacet();
+
+            var aggregate = await _context.GetCollection<TAggregate>()
+                .Aggregate()
+                .Facet(countFacet)
+                .FirstOrDefaultAsync();
+
+            return aggregate.GetCount();
+        }
+
         private static AggregateFacet<TAggregate, AggregateCountResult> GetCountFacet()
         {
             return AggregateFacet.Create(

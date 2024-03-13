@@ -28,5 +28,6 @@ namespace GoodReads.Application.Common.Repositories.MongoDb
             int size = PaginationConstants.DefaultPageSize,
             CancellationToken cancellationToken = default
         );
+        Task<long> GetCountAsync(CancellationToken cancellationToken = default);
     }
 }

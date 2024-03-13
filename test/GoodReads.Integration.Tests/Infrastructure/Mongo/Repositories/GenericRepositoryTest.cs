@@ -126,6 +126,30 @@ namespace GoodReads.Integration.Tests.Infrastructure.Mongo
             result.ElementAt(0).Id.Value.Should().Be(ratingId);
         }
 
+        [Fact]
+        public async Task GivenEntityRepository_WhenGetCount_ShouldReturnEntityCount()
+        {
+            // arrange
+            var repository = GetRepository();
+            var ratings = new List<Rating>
+            {
+                RatingMock.Get(),
+                RatingMock.Get(),
+                RatingMock.Get()
+            };
+
+            foreach (var rating in ratings)
+            {
+                await repository.AddAsync(rating, CancellationToken.None);
+            }
+
+            // act
+            var result = await repository.GetCountAsync(CancellationToken.None);
+
+            // assert
+            result.Should().Be(3);
+        }
+
         private GenericRepository<Rating, RatingId, Guid> GetRepository()
         {
             var connectionString = _mongo.GetConnectionString();
