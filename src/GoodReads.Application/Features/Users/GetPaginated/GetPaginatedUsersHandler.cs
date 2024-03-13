@@ -1,4 +1,5 @@
-using GoodReads.Domain.Common.Interfaces.Repositories.EntityFramework;
+using GoodReads.Application.Common.Repositories.EntityFramework;
+using GoodReads.Domain.Common.EntityFramework;
 using GoodReads.Domain.UserAggregate.Entities;
 using GoodReads.Domain.UserAggregate.ValueObjects;
 
@@ -24,6 +25,7 @@ namespace GoodReads.Application.Features.Users.GetPaginated
             cancellationToken.ThrowIfCancellationRequested();
 
             var users = await _repository.GetPaginatedAsync(
+                null,
                 request.Page,
                 request.Size,
                 cancellationToken

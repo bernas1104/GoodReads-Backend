@@ -1,8 +1,9 @@
 using GoodReads.Application.Features.Books.GetPaginated;
 using GoodReads.Domain.BookAggregate.Entities;
 using GoodReads.Domain.BookAggregate.ValueObjects;
-using GoodReads.Domain.Common.Interfaces.Repositories.EntityFramework;
+using GoodReads.Application.Common.Repositories.EntityFramework;
 using GoodReads.Shared.Mocks;
+using System.Linq.Expressions;
 
 namespace GoodReads.Unit.Tests.Application.Features.Books.GetPaginated
 {
@@ -26,6 +27,7 @@ namespace GoodReads.Unit.Tests.Application.Features.Books.GetPaginated
             var count = new Faker().Random.Int(1, 10);
 
             _repository.GetPaginatedAsync(
+                Arg.Any<Expression<Func<Book, bool>>>(),
                 Arg.Any<int>(),
                 Arg.Any<int>(),
                 Arg.Any<CancellationToken>()

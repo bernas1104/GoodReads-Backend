@@ -65,6 +65,67 @@ namespace GoodReads.Integration.Tests.Infrastructure.Mongo
             rating.Description.Should().NotBe(updatedRating.Description);
         }
 
+        [Fact]
+        public async Task GivenEntityRepository_WhenGetPaginated_ShouldReturnEntitiesPage()
+        {
+            // arrange
+            var repository = GetRepository();
+            var ratings = new List<Rating>
+            {
+                RatingMock.Get(),
+                RatingMock.Get(),
+                RatingMock.Get()
+            };
+
+            foreach (var rating in ratings)
+            {
+                await repository.AddAsync(rating, CancellationToken.None);
+            }
+
+            // act
+            var result = await repository.GetPaginatedAsync(
+                null,
+                page: 3,
+                size: 1,
+                CancellationToken.None
+            );
+
+            // assert
+            result.Should().NotBeNull();
+            result.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public async Task GivenEntityRepository_WhenGetPaginatedWithFilter_ShouldReturnEntitiesPage()
+        {
+            var ratingId = Guid.NewGuid();
+            var repository = GetRepository();
+            var ratings = new List<Rating>
+            {
+                RatingMock.Get(),
+                RatingMock.Get(),
+                RatingMock.Get(RatingId.Create(ratingId))
+            };
+
+            foreach (var rating in ratings)
+            {
+                await repository.AddAsync(rating, CancellationToken.None);
+            }
+
+            // act
+            var result = await repository.GetPaginatedAsync(
+                r => r.Id.Equals(RatingId.Create(ratingId)),
+                page: 1,
+                size: 10,
+                CancellationToken.None
+            );
+
+            // assert
+            result.Should().NotBeNull();
+            result.Should().HaveCount(1);
+            result.ElementAt(0).Id.Value.Should().Be(ratingId);
+        }
+
         private GenericRepository<Rating, RatingId, Guid> GetRepository()
         {
             var connectionString = _mongo.GetConnectionString();

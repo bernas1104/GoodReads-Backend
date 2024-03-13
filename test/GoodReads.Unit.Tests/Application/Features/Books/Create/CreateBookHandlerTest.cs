@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using GoodReads.Application.Features.Books.Create;
 using GoodReads.Domain.BookAggregate.Entities;
 using GoodReads.Domain.BookAggregate.ValueObjects;
-using GoodReads.Domain.Common.Interfaces.Repositories.EntityFramework;
+using GoodReads.Application.Common.Repositories.EntityFramework;
 using GoodReads.Shared.Mocks;
 using GoodReads.Unit.Tests.Helpers;
 

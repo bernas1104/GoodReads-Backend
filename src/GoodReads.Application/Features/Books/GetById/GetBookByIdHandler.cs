@@ -2,7 +2,7 @@ using ErrorOr;
 
 using GoodReads.Domain.BookAggregate.Entities;
 using GoodReads.Domain.BookAggregate.ValueObjects;
-using GoodReads.Domain.Common.Interfaces.Repositories.EntityFramework;
+using GoodReads.Application.Common.Repositories.EntityFramework;
 
 using MediatR;
 

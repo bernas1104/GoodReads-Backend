@@ -1,6 +1,7 @@
 using Bogus;
 
-using GoodReads.Domain.Common.Interfaces.Repositories.EntityFramework;
+using GoodReads.Application.Common.Repositories.EntityFramework;
+using GoodReads.Domain.Common.EntityFramework;
 using GoodReads.Domain.UserAggregate.Entities;
 using GoodReads.Domain.UserAggregate.ValueObjects;
 using GoodReads.Infrastructure.EntityFramework.Contexts;
@@ -112,6 +113,7 @@ namespace GoodReads.Integration.Tests.Infrastructure.EntityFramework.Repositorie
 
             // act
             var result = await repository.GetPaginatedAsync(
+                null,
                 page: 3,
                 pageSize: 1,
                 CancellationToken.None
@@ -120,6 +122,38 @@ namespace GoodReads.Integration.Tests.Infrastructure.EntityFramework.Repositorie
             // assert
             result.Should().NotBeNull();
             result.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public async Task GivenEntityRepository_WhenGetPaginatedWithFilter_ShouldReturnEntitiesPage()
+        {
+            // arrange
+            var userId = Guid.NewGuid();
+            var repository = GetRepository();
+            var users = new List<User>
+            {
+                UserMock.Get(),
+                UserMock.Get(),
+                UserMock.Get(UserId.Create(userId))
+            };
+
+            foreach (var user in users)
+            {
+                await repository.AddAsync(user, CancellationToken.None);
+            }
+
+            // act
+            var result = await repository.GetPaginatedAsync(
+                u => u.Id.Equals(UserId.Create(userId) as AggregateRootId<Guid>),
+                page: 1,
+                pageSize: 10,
+                CancellationToken.None
+            );
+
+            // assert
+            result.Should().NotBeNull();
+            result.Should().HaveCount(1);
+            result.ElementAt(0).Id.Value.Should().Be(userId);
         }
 
         [Fact]

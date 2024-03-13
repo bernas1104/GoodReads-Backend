@@ -1,6 +1,4 @@
-using GoodReads.Domain.Common.Interfaces.Repositories.MongoDb;
-using GoodReads.Domain.RatingAggregate.Entities;
-using GoodReads.Domain.RatingAggregate.ValueObjects;
+using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,48 +7,49 @@ namespace GoodReads.Api.Controllers.v1.Ratings
     [ApiController]
     [Route("v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
-    public class RatingsController : ControllerBase
+    public sealed class RatingsController : ControllerBase
     {
-        private readonly IRepository<Rating, RatingId, Guid> _repository;
+        private readonly ISender _sender;
 
-        public RatingsController(IRepository<Rating, RatingId, Guid> repository)
+        public RatingsController(ISender sender)
         {
-            _repository = repository;
+            _sender = sender;
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAsync(CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateAsync(
+            [FromBody] object request,
+            CancellationToken cancellationToken
+        )
         {
-            var rating = Rating.Create(
-                score: new Score(5),
-                description: "This is a rating description",
-                reading: new Reading(
-                    initiatedAt: DateTime.UtcNow.AddDays(-5),
-                    finishedAt: DateTime.UtcNow
-                ),
-                userId: Guid.NewGuid(),
-                bookId: Guid.NewGuid()
-            );
-
-            await _repository.AddAsync(rating, cancellationToken);
-
-            return Created($"{rating.Id.Value}", rating);
+            throw new NotImplementedException();
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(
+        [HttpGet]
+        public async Task<IActionResult> GetPaginatedAsync(
+            [FromQuery] object request,
+            CancellationToken cancellationToken
+        )
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateAsync(
             [FromRoute] Guid id,
             CancellationToken cancellationToken
         )
         {
-            var rating = await _repository.GetByIdAsync(
-                RatingId.Create(id),
-                cancellationToken
-            );
+            throw new NotImplementedException();
+        }
 
-            return rating is not null ?
-                Ok(rating) :
-                NotFound();
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(
+            [FromRoute] Guid id,
+            CancellationToken cancellationToken
+        )
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -20,6 +20,10 @@ namespace GoodReads.Infrastructure.EntityFramework.Contexts.Mappings
             builder.Property(x => x.UpdatedAt)
                 .HasColumnName("UpdatedAt")
                 .IsRequired();
+
+            builder.Property(x => x.DeletedAt)
+                .HasColumnName("DeletedAt")
+                .IsRequired(false);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using ErrorOr;
 
 using GoodReads.Application.Features.Users.Update;
-using GoodReads.Domain.Common.Interfaces.Repositories.EntityFramework;
+using GoodReads.Application.Common.Repositories.EntityFramework;
 using GoodReads.Domain.UserAggregate.Entities;
 using GoodReads.Domain.UserAggregate.ValueObjects;
 using GoodReads.Shared.Mocks;

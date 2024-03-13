@@ -1,4 +1,4 @@
-using GoodReads.Domain.Common.Interfaces.Repositories.MongoDb;
+using GoodReads.Application.Common.Repositories.MongoDb;
 using GoodReads.Domain.RatingAggregate.Entities;
 using GoodReads.Domain.RatingAggregate.ValueObjects;
 using GoodReads.Infrastructure.Mongo.Contexts;

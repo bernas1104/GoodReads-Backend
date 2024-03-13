@@ -2,9 +2,11 @@ using System.Linq.Expressions;
 
 using GoodReads.Domain.Common.EntityFramework;
 
-using GoodReads.Domain.Common.Interfaces.Repositories.EntityFramework;
+using GoodReads.Application.Common.Repositories.EntityFramework;
 
 using Microsoft.EntityFrameworkCore;
+using GoodReads.Application.Common.Pagination;
+using LinqKit;
 
 namespace GoodReads.Infrastructure.EntityFramework.Repositories
 {
@@ -25,7 +27,7 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
 
         public async Task AddAsync(
             TAggregate aggregate,
-            CancellationToken cancellationToken
+            CancellationToken cancellationToken = default
         )
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -36,7 +38,7 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
 
         public Task<TAggregate?> GetByIdAsync(
             AggregateRootId<TIdType> id,
-            CancellationToken cancellationToken
+            CancellationToken cancellationToken = default
         )
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -49,7 +51,7 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
 
         public async Task UpdateAsync(
             TAggregate aggregate,
-            CancellationToken cancellationToken
+            CancellationToken cancellationToken = default
         )
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -60,7 +62,7 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
 
         public Task<TAggregate?> GetByFilterAsync(
             Expression<Func<TAggregate, bool>> expression,
-            CancellationToken cancellationToken
+            CancellationToken cancellationToken = default
         )
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -72,28 +74,32 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
         }
 
         public async Task<IEnumerable<TAggregate>> GetPaginatedAsync(
-            int page,
-            int pageSize,
-            CancellationToken cancellationToken
+            Expression<Func<TAggregate, bool>>? filter,
+            int page = PaginationConstants.DefaultPage,
+            int pageSize = PaginationConstants.DefaultPageSize,
+            CancellationToken cancellationToken = default
         )
         {
             cancellationToken.ThrowIfCancellationRequested();
 
+            var expression = filter ?? GetEmptyFilter();
+            expression = expression.And(a => a.DeletedAt == null);
+
             return await _set.AsNoTracking()
-                .Where(a => a.DeletedAt == null)
+                .Where(expression)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
         }
 
-        public Task<int> GetCountAsync(CancellationToken cancellationToken)
+        public Task<int> GetCountAsync(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             return _set.CountAsync(cancellationToken);
         }
 
-        public async Task RemoveAsync(TAggregate aggregate, CancellationToken cancellationToken)
+        public async Task RemoveAsync(TAggregate aggregate, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -102,11 +108,14 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
             await SaveChanges(cancellationToken);
         }
 
-        private Task<int> SaveChanges(CancellationToken cancellationToken)
+        private Task<int> SaveChanges(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             return _context.SaveChangesAsync(cancellationToken);
         }
+
+        private Expression<Func<TAggregate, bool>> GetEmptyFilter() =>
+            x => true;
     }
 }
