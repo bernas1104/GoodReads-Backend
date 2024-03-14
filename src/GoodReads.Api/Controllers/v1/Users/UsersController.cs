@@ -1,3 +1,5 @@
+using ErrorOr;
+
 using GoodReads.Application.Features.Users.Create;
 using GoodReads.Application.Features.Users.Delete;
 using GoodReads.Application.Features.Users.GetById;
@@ -73,7 +75,15 @@ namespace GoodReads.Api.Controllers.v1.Users
             CancellationToken cancellationToken
         )
         {
-            request = new UpdateUserRequest(id, request.Name, request.Email);
+            if (id != request.Id)
+            {
+                ErrorOr<Updated> error = Error.Validation(
+                    code: "User.Validation",
+                    description: "Route Id must be equal to body Id"
+                );
+
+                return BadRequest(error);
+            }
 
             var result = await _sender.Send(request, cancellationToken);
 

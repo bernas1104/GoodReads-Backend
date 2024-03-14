@@ -3,6 +3,8 @@ using System.Net;
 using ErrorOr;
 
 using GoodReads.Api.Controllers.v1.Books;
+using GoodReads.Application.Common.Pagination;
+using GoodReads.Application.Features.Books;
 using GoodReads.Application.Features.Books.Create;
 using GoodReads.Application.Features.Books.Delete;
 using GoodReads.Application.Features.Books.GetById;
@@ -56,12 +58,14 @@ namespace GoodReads.Unit.Tests.Api.Controllers.v1.Books
         {
             // arrange
             var size = new Faker().Random.Int(5, 10);
+            var books = BookMock.GetFakeBookResponse()
+                .GenerateBetween(size, size);
             var request = new GetPaginatedBooksRequest(1, 10);
 
             _sender.Send(
                 Arg.Any<GetPaginatedBooksRequest>(),
                 Arg.Any<CancellationToken>()
-            ).Returns(BookMock.GetPaginatedBooksResponse(size));
+            ).Returns(PaginationMock.GetPaginatedResponse(books));
 
             // act
             var result = await _controller.GetPaginatedAsync(
@@ -71,8 +75,8 @@ namespace GoodReads.Unit.Tests.Api.Controllers.v1.Books
 
             // assert
             result.Should().NotBeNull();
-            result!.Value.Should().BeOfType<GetPaginatedBooksResponse>();
-            ((GetPaginatedBooksResponse)result!.Value!).Data.Should()
+            result!.Value.Should().BeOfType<PaginatedResponse<BookResponse>>();
+            ((PaginatedResponse<BookResponse>)result!.Value!).Data.Should()
                 .HaveCount(size);
         }
 
@@ -146,6 +150,26 @@ namespace GoodReads.Unit.Tests.Api.Controllers.v1.Books
             // assert
             response.Should().NotBeNull();
             response!.Value.Should().BeOfType<ErrorOr<Updated>>();
+            ((ErrorOr<Updated>)response!.Value!).IsError.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task GivenUpdateAsync_WhenRouteIdDifferentFromBodyId_ShouldReturnBadRequest()
+        {
+            // arrange
+            var bookId = Guid.NewGuid();
+            var request = BookMock.GetUpdateBookRequest();
+
+            // act
+            var response = await _controller.UpdateAsync(
+                bookId,
+                request,
+                CancellationToken.None
+            ) as BadRequestObjectResult;
+
+            // assert
+            response.Should().NotBeNull();
+            response!.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
             ((ErrorOr<Updated>)response!.Value!).IsError.Should().BeTrue();
         }
 

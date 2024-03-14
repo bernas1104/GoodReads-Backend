@@ -3,6 +3,8 @@ using System.Net;
 using ErrorOr;
 
 using GoodReads.Api.Controllers.v1.Users;
+using GoodReads.Application.Common.Pagination;
+using GoodReads.Application.Features.Users;
 using GoodReads.Application.Features.Users.Create;
 using GoodReads.Application.Features.Users.Delete;
 using GoodReads.Application.Features.Users.GetById;
@@ -59,13 +61,15 @@ namespace GoodReads.Unit.Tests.Api.Controllers.v1.Users
         {
             // arrange
             var request = UserMock.GetPaginatedUsersRequest();
+            var users = UserMock.GetUserResponse().GenerateBetween(5, 10);
+            var usersCount = users.Count;
 
             _sender.Send(
                 Arg.Is<GetPaginatedUsersRequest>(
                     x => x.Page == request.Page && x.Size == request.Size
                 ),
                 Arg.Any<CancellationToken>()
-            ).Returns(UserMock.GetPaginatedUsersResponse());
+            ).Returns(PaginationMock.GetPaginatedResponse(users));
 
             // act
             var response = await _controller.GetPaginatedAsync(
@@ -76,7 +80,9 @@ namespace GoodReads.Unit.Tests.Api.Controllers.v1.Users
 
             // assert
             response.Should().NotBeNull();
-            response!.Value.Should().BeOfType<GetPaginatedUsersResponse>();
+            response!.Value.Should().BeOfType<PaginatedResponse<UserResponse>>();
+            ((PaginatedResponse<UserResponse>)response!.Value!).Data.Should()
+                .HaveCount(usersCount);
         }
 
         [Fact]
@@ -138,6 +144,26 @@ namespace GoodReads.Unit.Tests.Api.Controllers.v1.Users
                 Arg.Any<UpdateUserRequest>(),
                 Arg.Any<CancellationToken>()
             ).Returns(Error.Failure());
+
+            // act
+            var response = await _controller.UpdateAsync(
+                userId,
+                request,
+                CancellationToken.None
+            ) as BadRequestObjectResult;
+
+            // assert
+            response.Should().NotBeNull();
+            response!.Value.Should().BeOfType<ErrorOr<Updated>>();
+            ((ErrorOr<Updated>)response!.Value!).IsError.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task GivenUpdateAsync_WhenRouteIdDifferentFromBodyId_ShouldReturnBadRequest()
+        {
+            // arrange
+            var userId = Guid.NewGuid();
+            var request = UserMock.GetUpdateUserRequest();
 
             // act
             var response = await _controller.UpdateAsync(

@@ -1,3 +1,5 @@
+using ErrorOr;
+
 using GoodReads.Application.Features.Books.Create;
 using GoodReads.Application.Features.Books.Delete;
 using GoodReads.Application.Features.Books.GetById;
@@ -69,7 +71,15 @@ namespace GoodReads.Api.Controllers.v1.Books
             CancellationToken cancellationToken
         )
         {
-            request = new UpdateBookRequest(id, request.Description, request.Cover);
+            if (id != request.Id)
+            {
+                ErrorOr<Updated> error = Error.Validation(
+                    code: "Book.Validation",
+                    description: "Route Id must be equal to body Id"
+                );
+
+                return BadRequest(error);
+            }
 
             var result = await _sender.Send(request, cancellationToken);
 
