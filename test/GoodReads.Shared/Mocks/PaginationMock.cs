@@ -1,9 +1,12 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Bogus;
 
 using GoodReads.Application.Common.Pagination;
 
 namespace GoodReads.Shared.Mocks
 {
+    [ExcludeFromCodeCoverage]
     public static class PaginationMock
     {
         public static PaginatedResponse<TType> GetPaginatedResponse<TType>(
