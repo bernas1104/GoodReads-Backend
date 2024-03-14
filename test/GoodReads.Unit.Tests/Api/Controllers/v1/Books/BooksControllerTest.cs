@@ -196,7 +196,7 @@ namespace GoodReads.Unit.Tests.Api.Controllers.v1.Books
         }
 
         [Fact]
-        public async Task GivenDeleteAsync_WhenBookNotFound_ShouldReturnBadRequest()
+        public async Task GivenDeleteAsync_WhenRequestError_ShouldReturnBadRequest()
         {
             // arrange
             var request = new DeleteBookRequest(Guid.NewGuid());

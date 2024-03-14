@@ -1,3 +1,11 @@
+using ErrorOr;
+
+using GoodReads.Application.Features.Ratings;
+using GoodReads.Application.Features.Ratings.Delete;
+using GoodReads.Application.Features.Ratings.GetById;
+using GoodReads.Application.Features.Ratings.GetPaginated;
+using GoodReads.Application.Features.Ratings.Update;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
@@ -18,29 +26,66 @@ namespace GoodReads.Api.Controllers.v1.Ratings
 
         [HttpPost]
         public async Task<IActionResult> CreateAsync(
-            [FromBody] object request,
+            [FromBody] CreateRatingRequest request,
             CancellationToken cancellationToken
         )
         {
-            throw new NotImplementedException();
+            var result = await _sender.Send(request, cancellationToken);
+
+            return CreatedAtAction(
+                nameof(GetByIdAsync),
+                new { id = result.Value },
+                result
+            );
         }
 
         [HttpGet]
         public async Task<IActionResult> GetPaginatedAsync(
-            [FromQuery] object request,
+            [FromQuery] GetPaginatedRatingsRequest request,
             CancellationToken cancellationToken
         )
         {
-            throw new NotImplementedException();
+            var response = await _sender.Send(request, cancellationToken);
+
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(
+            [FromRoute] Guid id,
+            CancellationToken cancellationToken
+        )
+        {
+            var response = await _sender.Send(
+                new GetRatingByIdRequest(id),
+                cancellationToken
+            );
+
+            return Ok(response);
         }
 
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateAsync(
             [FromRoute] Guid id,
+            [FromBody] UpdateRatingRequest request,
             CancellationToken cancellationToken
         )
         {
-            throw new NotImplementedException();
+            if (id != request.Id)
+            {
+                ErrorOr<Updated> error = Error.Validation(
+                    code: "Rating.Validation",
+                    description: "Route Id must be equal to body Id"
+                );
+
+                return BadRequest(error);
+            }
+
+            var response = await _sender.Send(request, cancellationToken);
+
+            return response.IsError ?
+                BadRequest(response) :
+                NoContent();
         }
 
         [HttpDelete("{id}")]
@@ -49,7 +94,14 @@ namespace GoodReads.Api.Controllers.v1.Ratings
             CancellationToken cancellationToken
         )
         {
-            throw new NotImplementedException();
+            var response = await _sender.Send(
+                new DeleteRatingRequest(id),
+                cancellationToken
+            );
+
+            return response.IsError ?
+                BadRequest(response) :
+                NoContent();
         }
     }
 }

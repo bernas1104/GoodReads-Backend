@@ -2,6 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 
 using Bogus;
 
+using GoodReads.Application.Features.Ratings;
+using GoodReads.Application.Features.Ratings.GetPaginated;
 using GoodReads.Domain.RatingAggregate.Entities;
 using GoodReads.Domain.RatingAggregate.ValueObjects;
 
@@ -31,5 +33,61 @@ namespace GoodReads.Shared.Mocks
                     )
             ));
         }
+
+        public static CreateRatingRequest GetCreateRatingRequest()
+        {
+            return new Faker<CreateRatingRequest>().CustomInstantiator(f => (
+                new CreateRatingRequest(
+                    Score: f.Random.Decimal(1, 5),
+                    Description: f.Random.String2(20),
+                    Reading: new CreateReadingRequest(
+                        InitiatedAt: f.Date.Recent(),
+                        FinishedAt: f.Date.Recent().AddDays(-14)
+                    ),
+                    UserId: Guid.NewGuid(),
+                    BookId: Guid.NewGuid()
+                )
+            ));
+        }
+
+        public static GetPaginatedRatingsRequest GetPaginatedRatingsRequest(
+            UsedId usedId = UsedId.Book,
+            Guid? bookId = null,
+            Guid? userId = null
+        )
+        {
+            return new Faker<GetPaginatedRatingsRequest>().CustomInstantiator(f => (
+                new GetPaginatedRatingsRequest(
+                    Page: f.Random.Int(1, 5),
+                    Size: f.Random.Int(10, 20),
+                    BookId: usedId == UsedId.Book ?
+                        (bookId ?? Guid.NewGuid()) : null,
+                    UserId: usedId == UsedId.User ?
+                        (userId ?? Guid.NewGuid()) : null,
+                    OnlyScoresOf: f.Random.Int(1, 5)
+                )
+            ));
+        }
+
+        public static Faker<RatingResponse> GetFakeRatingResponse()
+        {
+            return new Faker<RatingResponse>().CustomInstantiator(f => (
+                new RatingResponse(
+                    Score: f.Random.Decimal(1, 5),
+                    Description: f.Random.String2(20),
+                    Reading: new ReadingResponse(
+                        InitiatedAt: f.Date.Recent(),
+                        FinishedAt: f.Date.Recent().AddDays(-14)
+                    ),
+                    CreatedAt: DateTime.UtcNow
+                )
+            ));
+        }
+    }
+
+    public enum UsedId
+    {
+        Book,
+        User
     }
 }
