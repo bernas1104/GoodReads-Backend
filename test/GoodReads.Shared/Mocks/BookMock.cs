@@ -101,22 +101,7 @@ namespace GoodReads.Shared.Mocks
             ));
         }
 
-        public static GetPaginatedBooksResponse GetPaginatedBooksResponse(
-            int? size = null
-        )
-        {
-            return new Faker<GetPaginatedBooksResponse>().CustomInstantiator(f => (
-                new GetPaginatedBooksResponse(
-                    Data: GetBookResponse().GenerateBetween(size ?? 10, size ?? 10),
-                    CurrentPage: f.Random.Int(1, 10),
-                    TotalItens: f.Random.Int(10, 20),
-                    TotalPages: f.Random.Int(1, 2),
-                    PageSize: size ?? f.Random.Int(5, 10)
-                )
-            ));
-        }
-
-        public static Faker<BookResponse> GetBookResponse()
+        public static Faker<BookResponse> GetFakeBookResponse()
         {
             return new Faker<BookResponse>().CustomInstantiator(f => (
                 new BookResponse(

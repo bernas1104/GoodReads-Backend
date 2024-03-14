@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using Bogus;
 
+using GoodReads.Application.Features.Users;
 using GoodReads.Application.Features.Users.Create;
 using GoodReads.Application.Features.Users.GetById;
 using GoodReads.Application.Features.Users.GetPaginated;
@@ -50,24 +51,13 @@ namespace GoodReads.Shared.Mocks
             )
         ));
 
-        public static GetPaginatedUsersResponse GetPaginatedUsersResponse() =>
-            new Faker<GetPaginatedUsersResponse>().CustomInstantiator(f => (
-                new GetPaginatedUsersResponse(
-                    Data: GetPaginatedUserResponse().Generate(f.Random.Int(0, 10)),
-                    CurrentPage: f.Random.Int(0, 10),
-                    TotalItens: f.Random.Int(0, 10),
-                    TotalPages: f.Random.Int(0, 10),
-                    PageSize: f.Random.Int(0, 10)
-                )
-            ));
-
-        public static Faker<GetPaginatedUserResponse> GetPaginatedUserResponse(
+        public static Faker<UserResponse> GetUserResponse(
             string? name = null,
             int? totalRatings = null
         )
         {
-            return new Faker<GetPaginatedUserResponse>().CustomInstantiator(f => (
-                new GetPaginatedUserResponse(
+            return new Faker<UserResponse>().CustomInstantiator(f => (
+                new UserResponse(
                     Name: name ?? f.Person.FullName,
                     TotalRatings: totalRatings ?? f.Random.Int(0, 100)
                 )

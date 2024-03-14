@@ -1,6 +1,6 @@
 namespace GoodReads.Application.Common.Pagination
 {
-    public abstract record PaginatedResponse<TResponse>(
+    public sealed record PaginatedResponse<TResponse>(
         IEnumerable<TResponse> Data,
         int CurrentPage,
         int TotalItens,

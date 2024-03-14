@@ -3,11 +3,12 @@ using GoodReads.Domain.BookAggregate.ValueObjects;
 using GoodReads.Application.Common.Repositories.EntityFramework;
 
 using MediatR;
+using GoodReads.Application.Common.Pagination;
 
 namespace GoodReads.Application.Features.Books.GetPaginated
 {
     public sealed class GetPaginatedBooksHandler :
-        IRequestHandler<GetPaginatedBooksRequest, GetPaginatedBooksResponse>
+        IRequestHandler<GetPaginatedBooksRequest, PaginatedResponse<BookResponse>>
     {
         private readonly IRepository<Book, BookId, Guid> _repository;
 
@@ -16,7 +17,7 @@ namespace GoodReads.Application.Features.Books.GetPaginated
             _repository = repository;
         }
 
-        public async Task<GetPaginatedBooksResponse> Handle(
+        public async Task<PaginatedResponse<BookResponse>> Handle(
             GetPaginatedBooksRequest request,
             CancellationToken cancellationToken
         )
@@ -32,7 +33,7 @@ namespace GoodReads.Application.Features.Books.GetPaginated
 
             var booksCount = await _repository.GetCountAsync(cancellationToken);
 
-            return new GetPaginatedBooksResponse(
+            return new PaginatedResponse<BookResponse>(
                 Data: books.Select(b => new BookResponse(
                     Title: b.Title,
                     Isbn: b.Isbn,
