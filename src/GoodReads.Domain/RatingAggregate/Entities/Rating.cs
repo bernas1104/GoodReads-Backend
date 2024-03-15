@@ -62,8 +62,6 @@ namespace GoodReads.Domain.RatingAggregate.Entities
                 bookId
             );
 
-            rating.AddDomainEvent(new RatingCreated(rating));
-
             return rating;
         }
 
