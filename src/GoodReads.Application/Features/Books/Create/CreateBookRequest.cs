@@ -10,8 +10,8 @@ namespace GoodReads.Application.Features.Books.Create
         string Isbn,
         string Author,
         int Gender,
-        BookDataRequest BookData,
-        byte[] Cover
+        BookDataRequest BookData
+        // byte[] Cover
     ) : IRequest<ErrorOr<Guid>>;
 
     public sealed record BookDataRequest(

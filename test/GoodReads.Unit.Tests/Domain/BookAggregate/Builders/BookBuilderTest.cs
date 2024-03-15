@@ -23,6 +23,7 @@ namespace GoodReads.Unit.Tests.Domain.BookAggregate.Builders
             _dateProvider = new FakeDateProvider(DateTime.UtcNow);
         }
 
+        /*
         [Fact]
         public void GivenBookBuilder_WhenBuildWithCover_ShouldReturnBookWithCover()
         {
@@ -38,6 +39,7 @@ namespace GoodReads.Unit.Tests.Domain.BookAggregate.Builders
             book.Should().NotBeNull();
             book.Cover.Should().NotBeEmpty();
         }
+        */
 
         [Fact]
         public void GivenBookBuilder_WhenBuildWithValidDescription_ShouldReturnBookWithDescription()

@@ -38,8 +38,8 @@ namespace GoodReads.Application.Features.Books.GetPaginated
                     Title: b.Title,
                     Isbn: b.Isbn,
                     Author: b.Author,
-                    Gender: b.Gender.Name,
-                    Cover: b.Cover.ToArray()
+                    Gender: b.Gender.Name
+                    // Cover: b.Cover.ToArray()
                 )),
                 CurrentPage: request.Page,
                 TotalItens: booksCount,

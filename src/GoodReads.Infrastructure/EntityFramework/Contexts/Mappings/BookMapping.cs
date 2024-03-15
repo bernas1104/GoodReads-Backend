@@ -101,9 +101,11 @@ namespace GoodReads.Infrastructure.EntityFramework.Contexts.Mappings
                 }
             );
 
+            /*
             builder.Property(x => x.Cover)
                 .HasColumnName("Cover")
                 .IsRequired(false);
+            */
 
             builder.OwnsMany(
                 x => x.RatingIds,

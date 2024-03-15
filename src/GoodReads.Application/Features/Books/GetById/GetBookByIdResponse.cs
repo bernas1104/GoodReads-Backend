@@ -8,15 +8,15 @@ namespace GoodReads.Application.Features.Books.GetById
         decimal MeanScore,
         string Gender,
         BookDataResponse BookData,
-        byte[] Cover,
+        // byte[] Cover,
         IEnumerable<Guid> RatingIds
 
     ) : BookResponse(
         Title,
         Isbn,
         Author,
-        Gender,
-        Cover
+        Gender
+        // Cover
     );
 
     public record BookDataResponse(

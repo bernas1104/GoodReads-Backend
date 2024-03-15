@@ -54,7 +54,7 @@ namespace GoodReads.Application.Features.Books.GetById
                     YearOfPublication: book.BookData.YearOfPublication,
                     Pages: book.BookData.Pages
                 ),
-                Cover: book.Cover.ToArray(),
+                // Cover: book.Cover.ToArray(),
                 RatingIds: book.RatingIds.Select(r => r.Value)
             );
         }

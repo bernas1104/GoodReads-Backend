@@ -39,7 +39,7 @@ namespace GoodReads.Shared.Mocks
                         f.Date.Recent().Year,
                         f.Random.Int(100, 500)
                     );
-                    builder.AddCover(Array.Empty<byte>());
+                    // builder.AddCover(Array.Empty<byte>());
 
                     return builder.GetBook();
                 }
@@ -62,7 +62,7 @@ namespace GoodReads.Shared.Mocks
                         f.Date.Recent().Year,
                         f.Random.Int(100, 500)
                     );
-                    builder.AddCover(Array.Empty<byte>());
+                    // builder.AddCover(Array.Empty<byte>());
 
                     return builder.GetBook();
             }).GenerateBetween(quantity ?? 1, quantity ?? 1);
@@ -82,8 +82,8 @@ namespace GoodReads.Shared.Mocks
                         Publisher: f.Company.CompanyName(),
                         YearOfPublication: f.Random.Int(1900, DateTime.UtcNow.Year),
                         Pages: f.Random.Int(20, 500)
-                    ),
-                    Cover: Array.Empty<byte>()
+                    )
+                    // Cover: Array.Empty<byte>()
                 )
             ));
         }
@@ -108,8 +108,8 @@ namespace GoodReads.Shared.Mocks
                     Title: f.Random.String2(10),
                     Isbn: f.Random.String2(10),
                     Author: f.Person.FullName,
-                    Gender: Gender.FromValue(f.Random.Int(0, 5)).Name,
-                    Cover: Array.Empty<byte>()
+                    Gender: Gender.FromValue(f.Random.Int(0, 5)).Name
+                    // Cover: Array.Empty<byte>()
                 )
             ));
         }
@@ -125,7 +125,7 @@ namespace GoodReads.Shared.Mocks
                     MeanScore: f.Random.Decimal(0, 5),
                     Gender: Gender.FromValue(f.Random.Int(0, 5)).Name,
                     BookData: GetBookDataResponse(),
-                    Cover: Array.Empty<byte>(),
+                    // Cover: Array.Empty<byte>(),
                     RatingIds: new List<Guid>{ Guid.NewGuid() }
                 )
             ));
@@ -150,8 +150,8 @@ namespace GoodReads.Shared.Mocks
             return new Faker<UpdateBookRequest>().CustomInstantiator(f => (
                 new UpdateBookRequest(
                     Id: id ?? Guid.NewGuid(),
-                    Description: description ?? f.Random.String2(20),
-                    Cover: Array.Empty<byte>()
+                    Description: description ?? f.Random.String2(20)
+                    // Cover: Array.Empty<byte>()
                 )
             ));
         }

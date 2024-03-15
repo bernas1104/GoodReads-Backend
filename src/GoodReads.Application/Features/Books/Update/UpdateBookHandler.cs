@@ -43,7 +43,7 @@ namespace GoodReads.Application.Features.Books.Update
                 return BookNotFoundError(request);
             }
 
-            book.Update(request.Description, request.Cover);
+            book.Update(request.Description/*, request.Cover*/);
 
             await _repository.UpdateAsync(book, cancellationToken);
 

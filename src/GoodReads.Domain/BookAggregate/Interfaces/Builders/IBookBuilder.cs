@@ -5,7 +5,7 @@ namespace GoodReads.Domain.BookAggregate.Interfaces.Builders
     public interface IBookBuilder
     {
         IBookBuilder AddDescription(string description);
-        IBookBuilder AddCover(IEnumerable<byte> cover);
+        // IBookBuilder AddCover(IEnumerable<byte> cover);
         IBookBuilder AddBookData(
             string publisher,
             int yearOfPublication,
