@@ -16,6 +16,7 @@ namespace GoodReads.IOC
             ConfigureBindingsEntityFramework.RegisterBindings(services, configuration);
             ConfigureBindingsMediatR.RegisterBindings(services, configuration);
             ConfigureBindingsCaching.RegisterBindings(services, configuration);
+            ConfigureBindingsValidator.RegisterBindings(services);
         }
     }
 }

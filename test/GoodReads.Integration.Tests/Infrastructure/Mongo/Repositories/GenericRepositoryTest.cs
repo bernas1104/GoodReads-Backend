@@ -127,7 +127,7 @@ namespace GoodReads.Integration.Tests.Infrastructure.Mongo
         }
 
         [Fact]
-        public async Task GivenEntityRepository_WhenGetCount_ShouldReturnEntityCount()
+        public async Task GivenEntityRepository_WhenGetCountWithoutFilters_ShouldReturnEntityCount()
         {
             // arrange
             var repository = GetRepository();
@@ -144,10 +144,42 @@ namespace GoodReads.Integration.Tests.Infrastructure.Mongo
             }
 
             // act
-            var result = await repository.GetCountAsync(CancellationToken.None);
+            var result = await repository.GetCountAsync(
+                null,
+                CancellationToken.None
+            );
 
             // assert
             result.Should().Be(3);
+        }
+
+        [Fact]
+        public async Task GivenEntityRepository_WhenGetCountWithFilter_ShouldReturnEntityCount()
+        {
+            // arrange
+            var repository = GetRepository();
+            var specificRating = RatingMock.Get();
+            var ratings = new List<Rating>
+            {
+                RatingMock.Get(),
+                RatingMock.Get(),
+                specificRating
+            };
+
+            foreach (var rating in ratings)
+            {
+                await repository.AddAsync(rating, CancellationToken.None);
+            }
+
+            // act
+            var result = await repository.GetCountAsync(
+                r => r.UserId.Equals(specificRating.UserId) &&
+                    r.BookId.Equals(specificRating.BookId),
+                CancellationToken.None
+            );
+
+            // assert
+            result.Should().Be(1);
         }
 
         [Fact]
@@ -183,7 +215,7 @@ namespace GoodReads.Integration.Tests.Infrastructure.Mongo
             // act
             await repository.DeleteAsync(rating.Id, CancellationToken.None);
 
-            var count = await repository.GetCountAsync(CancellationToken.None);
+            var count = await repository.GetCountAsync(null, CancellationToken.None);
 
             // assert
             count.Should().Be(0);

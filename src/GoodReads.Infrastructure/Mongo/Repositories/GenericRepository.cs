@@ -84,12 +84,21 @@ namespace GoodReads.Infrastructure.Mongo.Repositories
             return aggregate.GetData<TAggregate>();
         }
 
-        public async Task<long> GetCountAsync(CancellationToken cancellationToken = default)
+        public async Task<long> GetCountAsync(
+            Expression<Func<TAggregate, bool>>? filter = null,
+            CancellationToken cancellationToken = default
+        )
         {
             var countFacet = GetCountFacet();
 
+            if (filter is null)
+            {
+                filter = EmptyFilter;
+            }
+
             var aggregate = await _context.GetCollection<TAggregate>()
                 .Aggregate()
+                .Match(filter)
                 .Facet(countFacet)
                 .FirstOrDefaultAsync(cancellationToken);
 
@@ -153,5 +162,7 @@ namespace GoodReads.Infrastructure.Mongo.Repositories
                 )
             );
         }
+
+        private static Expression<Func<TAggregate, bool>> EmptyFilter => r => true;
     }
 }

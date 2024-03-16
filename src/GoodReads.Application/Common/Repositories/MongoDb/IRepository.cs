@@ -28,7 +28,10 @@ namespace GoodReads.Application.Common.Repositories.MongoDb
             int size = PaginationConstants.DefaultPageSize,
             CancellationToken cancellationToken = default
         );
-        Task<long> GetCountAsync(CancellationToken cancellationToken = default);
+        Task<long> GetCountAsync(
+            Expression<Func<TAggregate, bool>>? filter = null,
+            CancellationToken cancellationToken = default
+        );
         Task<TAggregate?> GetByFilterAsync(
             Expression<Func<TAggregate, bool>> filter,
             CancellationToken cancellationToken = default

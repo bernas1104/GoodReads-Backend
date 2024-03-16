@@ -58,7 +58,8 @@ namespace GoodReads.Shared.Mocks
         public static GetPaginatedRatingsRequest GetPaginatedRatingsRequest(
             UsedId usedId = UsedId.Book,
             Guid? bookId = null,
-            Guid? userId = null
+            Guid? userId = null,
+            int? onlyScoresOf = null
         )
         {
             return new Faker<GetPaginatedRatingsRequest>().CustomInstantiator(f => (
@@ -69,7 +70,7 @@ namespace GoodReads.Shared.Mocks
                         (bookId ?? Guid.NewGuid()) : null,
                     UserId: usedId == UsedId.User ?
                         (userId ?? Guid.NewGuid()) : null,
-                    OnlyScoresOf: f.Random.Int(1, 5)
+                    OnlyScoresOf: onlyScoresOf ?? f.Random.Int(1, 5)
                 )
             ));
         }
@@ -78,7 +79,7 @@ namespace GoodReads.Shared.Mocks
         {
             return new Faker<RatingResponse>().CustomInstantiator(f => (
                 new RatingResponse(
-                    Score: f.Random.Decimal(1, 5),
+                    Score: f.Random.Int(1, 5),
                     Description: f.Random.String2(20),
                     Reading: new ReadingResponse(
                         InitiatedAt: f.Date.Recent(),
