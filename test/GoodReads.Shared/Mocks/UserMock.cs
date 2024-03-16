@@ -7,6 +7,7 @@ using GoodReads.Application.Features.Users.Create;
 using GoodReads.Application.Features.Users.GetById;
 using GoodReads.Application.Features.Users.GetPaginated;
 using GoodReads.Application.Features.Users.Update;
+using GoodReads.Domain.Common.Events;
 using GoodReads.Domain.UserAggregate.Entities;
 using GoodReads.Domain.UserAggregate.ValueObjects;
 
@@ -90,5 +91,22 @@ namespace GoodReads.Shared.Mocks
                 Email: email ?? f.Internet.Email()
             )
         ));
+
+        public static UserRatingAdded GetUserRatingAdded(
+            Guid? ratingId = null,
+            Guid? userId = null,
+            Guid? bookId = null
+        )
+        {
+            return new Faker<UserRatingAdded>().CustomInstantiator(f => (
+                UserRatingAdded.Create(
+                    RatingMock.GetRatingCreatedEvent(
+                        ratingId ?? Guid.NewGuid(),
+                        userId ?? Guid.NewGuid(),
+                        bookId ?? Guid.NewGuid()
+                    )
+                )
+            ));
+        }
     }
 }

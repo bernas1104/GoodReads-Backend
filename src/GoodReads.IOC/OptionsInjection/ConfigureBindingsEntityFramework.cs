@@ -10,6 +10,7 @@ using GoodReads.Infrastructure.EntityFramework.Utils;
 using Microsoft.Extensions.Configuration;
 
 using Microsoft.Extensions.DependencyInjection;
+using GoodReads.Infrastructure.EntityFramework.Interceptors;
 
 namespace GoodReads.IOC.OptionsInjection
 {
@@ -33,6 +34,8 @@ namespace GoodReads.IOC.OptionsInjection
                     configuration,
                     "books"
                 );
+
+            services.AddScoped<DomainEventsInterceptor>();
 
             services.AddScoped<
                 IRepository<User, UserId, Guid>,

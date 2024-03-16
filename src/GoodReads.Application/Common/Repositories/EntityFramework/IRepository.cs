@@ -32,5 +32,6 @@ namespace GoodReads.Application.Common.Repositories.EntityFramework
             CancellationToken cancellationToken = default
         );
         Task<int> GetCountAsync(CancellationToken cancellationToken = default);
+        Task DeleteAsync(TAggregate aggregate, CancellationToken cancellationToken);
     }
 }

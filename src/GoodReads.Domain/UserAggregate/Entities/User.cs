@@ -34,6 +34,11 @@ namespace GoodReads.Domain.UserAggregate.Entities
             _ratingIds.Add(ratingId);
         }
 
+        public void RemoveRating(RatingId ratingId)
+        {
+            _ratingIds.Remove(ratingId);
+        }
+
         public void Update(string name, string email)
         {
             Name = name;

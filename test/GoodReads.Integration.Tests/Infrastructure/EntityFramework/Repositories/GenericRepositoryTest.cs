@@ -2,12 +2,16 @@ using Bogus;
 
 using GoodReads.Application.Common.Repositories.EntityFramework;
 using GoodReads.Domain.Common.EntityFramework;
+using GoodReads.Domain.Common.Interfaces.Events;
 using GoodReads.Domain.UserAggregate.Entities;
 using GoodReads.Domain.UserAggregate.ValueObjects;
 using GoodReads.Infrastructure.EntityFramework.Contexts;
+using GoodReads.Infrastructure.EntityFramework.Interceptors;
 using GoodReads.Infrastructure.EntityFramework.Repositories;
 using GoodReads.Infrastructure.EntityFramework.Utils;
 using GoodReads.Shared.Mocks;
+
+using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +23,7 @@ namespace GoodReads.Integration.Tests.Infrastructure.EntityFramework.Repositorie
 {
     public partial class GenericRepositoryTest : IAsyncLifetime
     {
+        private readonly IPublisher _publisher = Substitute.For<IPublisher>();
         private readonly MsSqlContainer _msSql = new MsSqlBuilder()
             .WithImage("mcr.microsoft.com/mssql/server:2019-latest")
             .WithPortBinding(1434, 1433)
@@ -180,6 +185,46 @@ namespace GoodReads.Integration.Tests.Infrastructure.EntityFramework.Repositorie
             result.Should().Be(3);
         }
 
+        [Fact]
+        public async Task GivenEntityRepository_WhenSavingChanges_ShouldPublishDomainEvents()
+        {
+            // arrange
+            var repository = GetRepository();
+            var user = UserMock.Get();
+            var events = new Faker<Foo>().GenerateBetween(2, 10);
+            var eventCound = events.Count;
+
+            events.ForEach(user.AddDomainEvent);
+
+            // act
+            await repository.AddAsync(user, CancellationToken.None);
+
+            // assert
+            await _publisher.Received(eventCound)
+                .Publish(
+                    Arg.Any<IDomainEvent>(),
+                    Arg.Any<CancellationToken>()
+                );
+        }
+
+        [Fact]
+        public async Task GivenEntityRepository_WhenDeleteAsync_ShouldDeleteEntityFromDatabase()
+        {
+            // arrange
+            var repository = GetRepository();
+            var user = UserMock.Get();
+
+            await repository.AddAsync(user, CancellationToken.None);
+
+            // act
+            await repository.DeleteAsync(user, CancellationToken.None);
+
+            var count = await repository.GetCountAsync(CancellationToken.None);
+
+            // assert
+            count.Should().Be(0);
+        }
+
         private IRepository<User, UserId, Guid> GetRepository()
         {
             var connectionString = _msSql.GetConnectionString();
@@ -201,6 +246,10 @@ namespace GoodReads.Integration.Tests.Infrastructure.EntityFramework.Repositorie
                     configuration,
                     "users"
                 );
+
+            services.AddTransient(_ => _publisher);
+
+            services.AddTransient<DomainEventsInterceptor>();
 
             services.AddTransient<
                 IRepository<User, UserId, Guid>,
@@ -225,4 +274,6 @@ namespace GoodReads.Integration.Tests.Infrastructure.EntityFramework.Repositorie
             await _msSql.DisposeAsync().AsTask();
         }
     }
+
+    internal class Foo : IDomainEvent;
 }

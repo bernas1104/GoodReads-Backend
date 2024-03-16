@@ -96,6 +96,32 @@ namespace GoodReads.Infrastructure.Mongo.Repositories
             return aggregate.GetCount();
         }
 
+        public async Task<TAggregate?> GetByFilterAsync(
+            Expression<Func<TAggregate, bool>> filter,
+            CancellationToken cancellationToken
+        )
+        {
+            var queryResult = await _context.GetCollection<TAggregate>()
+                .FindAsync(
+                    filter,
+                    cancellationToken: cancellationToken
+                );
+
+            return await queryResult.FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task DeleteAsync(
+            AggregateRootId<TIdType> id,
+            CancellationToken cancellationToken
+        )
+        {
+            await _context.GetCollection<TAggregate>()
+                .DeleteOneAsync(
+                    a => a.Id.Equals(id),
+                    cancellationToken: cancellationToken
+                );
+        }
+
         private static AggregateFacet<TAggregate, AggregateCountResult> GetCountFacet()
         {
             return AggregateFacet.Create(

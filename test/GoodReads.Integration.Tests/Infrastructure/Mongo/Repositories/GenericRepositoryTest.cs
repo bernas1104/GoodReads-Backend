@@ -150,6 +150,45 @@ namespace GoodReads.Integration.Tests.Infrastructure.Mongo
             result.Should().Be(3);
         }
 
+        [Fact]
+        public async Task GivenEntityRepository_WhenGetByFilter_ShouldReturnEntity()
+        {
+            // arrange
+            var rating = RatingMock.Get();
+            var bookdId = rating.BookId;
+            var repository = GetRepository();
+
+            await repository.AddAsync(rating);
+
+            // act
+            var result = await repository.GetByFilterAsync(
+                r => r.BookId == bookdId,
+                CancellationToken.None
+            );
+
+            // assert
+            result.Should().NotBeNull();
+            result!.BookId.Should().Be(bookdId);
+        }
+
+        [Fact]
+        public async Task GivenEntityRepository_WhenDeleteAsync_ShouldDeleteEntityFromDatabase()
+        {
+            // arrange
+            var repository = GetRepository();
+            var rating = RatingMock.Get();
+
+            await repository.AddAsync(rating, CancellationToken.None);
+
+            // act
+            await repository.DeleteAsync(rating.Id, CancellationToken.None);
+
+            var count = await repository.GetCountAsync(CancellationToken.None);
+
+            // assert
+            count.Should().Be(0);
+        }
+
         private GenericRepository<Rating, RatingId, Guid> GetRepository()
         {
             var connectionString = _mongo.GetConnectionString();

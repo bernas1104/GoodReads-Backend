@@ -4,6 +4,7 @@ using Bogus;
 
 using GoodReads.Application.Features.Ratings;
 using GoodReads.Application.Features.Ratings.GetPaginated;
+using GoodReads.Domain.Common.Events;
 using GoodReads.Domain.RatingAggregate.Entities;
 using GoodReads.Domain.RatingAggregate.ValueObjects;
 
@@ -12,7 +13,11 @@ namespace GoodReads.Shared.Mocks
     [ExcludeFromCodeCoverage]
     public static class RatingMock
     {
-        public static Rating Get(RatingId? id = null)
+        public static Rating Get(
+            RatingId? id = null,
+            Guid ? userId = null,
+            Guid ? bookId = null
+        )
         {
             return new Faker<Rating>().CustomInstantiator(f => (
                 id is null ?
@@ -20,8 +25,8 @@ namespace GoodReads.Shared.Mocks
                         score: ScoreMock.Get(),
                         description: f.Random.String2(50),
                         reading: ReadingMock.Get(),
-                        userId: Guid.NewGuid(),
-                        bookId: Guid.NewGuid()
+                        userId: userId ?? Guid.NewGuid(),
+                        bookId: bookId ?? Guid.NewGuid()
                     ) :
                     Rating.Instantiate(
                         id!,
@@ -38,11 +43,11 @@ namespace GoodReads.Shared.Mocks
         {
             return new Faker<CreateRatingRequest>().CustomInstantiator(f => (
                 new CreateRatingRequest(
-                    Score: f.Random.Decimal(1, 5),
+                    Score: f.Random.Int(1, 5),
                     Description: f.Random.String2(20),
                     Reading: new CreateReadingRequest(
                         InitiatedAt: f.Date.Recent(),
-                        FinishedAt: f.Date.Recent().AddDays(-14)
+                        FinishedAt: f.Date.Recent().AddDays(14)
                     ),
                     UserId: Guid.NewGuid(),
                     BookId: Guid.NewGuid()
@@ -77,9 +82,26 @@ namespace GoodReads.Shared.Mocks
                     Description: f.Random.String2(20),
                     Reading: new ReadingResponse(
                         InitiatedAt: f.Date.Recent(),
-                        FinishedAt: f.Date.Recent().AddDays(-14)
+                        FinishedAt: f.Date.Recent().AddDays(14)
                     ),
                     CreatedAt: DateTime.UtcNow
+                )
+            ));
+        }
+
+        public static RatingCreated GetRatingCreatedEvent(
+            Guid? ratingId = null,
+            Guid? userId = null,
+            Guid? bookId = null
+        )
+        {
+            return new Faker<RatingCreated>().CustomInstantiator(f => (
+                RatingCreated.Create(
+                    Get(
+                        id: RatingId.Create(ratingId ?? Guid.NewGuid()),
+                        userId: userId ?? Guid.NewGuid(),
+                        bookId: bookId ?? Guid.NewGuid()
+                    )
                 )
             ));
         }

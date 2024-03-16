@@ -29,5 +29,10 @@ namespace GoodReads.Application.Common.Repositories.MongoDb
             CancellationToken cancellationToken = default
         );
         Task<long> GetCountAsync(CancellationToken cancellationToken = default);
+        Task<TAggregate?> GetByFilterAsync(
+            Expression<Func<TAggregate, bool>> filter,
+            CancellationToken cancellationToken = default
+        );
+        Task DeleteAsync(AggregateRootId<TIdType> id, CancellationToken cancellationToken);
     }
 }
