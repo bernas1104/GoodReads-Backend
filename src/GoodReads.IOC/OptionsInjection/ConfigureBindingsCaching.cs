@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 using GoodReads.Application.Common.Configurations;
 using GoodReads.Application.Common.Services;
 using GoodReads.Infrastructure.Services;
@@ -20,7 +15,7 @@ namespace GoodReads.IOC.OptionsInjection
             IConfiguration configuration
         )
         {
-            var section = configuration.GetSection(CacheConfig.Redis);
+            var section = configuration.GetSection(CacheConfig.Cache);
             var connection = section.Get<CacheConfig>();
             var connectionString = connection?.RedisConnectionString;
 
