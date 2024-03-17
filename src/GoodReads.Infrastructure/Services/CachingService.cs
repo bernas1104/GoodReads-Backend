@@ -52,7 +52,10 @@ namespace GoodReads.Infrastructure.Services
 
                 if (!string.IsNullOrEmpty(resultString))
                 {
-                    return JsonSerializer.Deserialize<TValue>(resultString);
+                    return JsonSerializer.Deserialize<TValue>(
+                        resultString,
+                        new JsonSerializerOptions(JsonSerializerDefaults.Web)
+                    );
                 }
             }
             catch (Exception ex)
@@ -75,7 +78,10 @@ namespace GoodReads.Infrastructure.Services
             CancellationToken cancellationToken
         )
         {
-            var stringValue = JsonSerializer.Serialize(value);
+            var stringValue = JsonSerializer.Serialize(
+                value,
+                new JsonSerializerOptions(JsonSerializerDefaults.Web)
+            );
 
             try
             {

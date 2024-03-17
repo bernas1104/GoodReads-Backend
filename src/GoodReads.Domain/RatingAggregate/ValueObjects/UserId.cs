@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 using GoodReads.Domain.Common;
 
 namespace GoodReads.Domain.RatingAggregate.ValueObjects
@@ -6,6 +8,7 @@ namespace GoodReads.Domain.RatingAggregate.ValueObjects
     {
         public Guid Value { get; private set; }
 
+        [JsonConstructor]
         private UserId(Guid value)
         {
             Value = value;

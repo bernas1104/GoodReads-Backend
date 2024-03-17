@@ -58,8 +58,8 @@ namespace GoodReads.Unit.Tests.Application.Features.Users.Notifications
                 );
 
             _logger.ShouldHaveLoggedInformation(
-                $"Rating ({ratingId}) removed from User ({userId}) because " +
-                    $"Book ({bookId}) was not found"
+                $"Rating ({@event.RatingId}) removed from User ({@event.UserId}) because " +
+                    $"Book ({@event.BookId}) was not found"
             );
         }
     }

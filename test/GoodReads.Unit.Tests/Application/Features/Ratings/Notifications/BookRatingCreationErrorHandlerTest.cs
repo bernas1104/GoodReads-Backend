@@ -47,7 +47,7 @@ namespace GoodReads.Unit.Tests.Application.Features.Ratings.Notifications
                 );
 
             _logger.ShouldHaveLoggedInformation(
-                $"Rating ({ratingId}) removed because Book ({bookId}) was not found"
+                $"Rating ({@event.RatingId}) removed because Book ({@event.BookId}) was not found"
             );
         }
     }

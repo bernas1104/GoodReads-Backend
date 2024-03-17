@@ -1,6 +1,7 @@
 using ErrorOr;
 
 using GoodReads.Application.Common.Repositories.MongoDb;
+using GoodReads.Application.Common.Services;
 using GoodReads.Domain.RatingAggregate.Entities;
 using GoodReads.Domain.RatingAggregate.ValueObjects;
 
@@ -15,14 +16,17 @@ namespace GoodReads.Application.Features.Ratings.GetById
     {
         private readonly IRepository<Rating, RatingId, Guid> _repository;
         private readonly ILogger<GetRatingByIdHandler> _logger;
+        private readonly ICachingService _cachingService;
 
         public GetRatingByIdHandler(
             IRepository<Rating, RatingId, Guid> repository,
-            ILogger<GetRatingByIdHandler> logger
+            ILogger<GetRatingByIdHandler> logger,
+            ICachingService cachingService
         )
         {
             _repository = repository;
             _logger = logger;
+            _cachingService = cachingService;
         }
 
         public async Task<ErrorOr<RatingResponse>> Handle(
@@ -32,7 +36,17 @@ namespace GoodReads.Application.Features.Ratings.GetById
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var rating = await _repository.GetByIdAsync(
+            var rating = await _cachingService.GetAsync<Rating>(
+                request.Id.ToString(),
+                cancellationToken
+            );
+
+            if (rating is not null)
+            {
+                return BuildResponse(rating);
+            }
+
+            rating = await _repository.GetByIdAsync(
                 RatingId.Create(request.Id),
                 cancellationToken
             );
@@ -42,7 +56,18 @@ namespace GoodReads.Application.Features.Ratings.GetById
                 return RatingNotFoundError(request);
             }
 
-            return new RatingResponse(
+            await _cachingService.SetAsync(
+                rating.Id.Value.ToString(),
+                rating,
+                DateTimeOffset.UtcNow.AddMinutes(5),
+                cancellationToken
+            );
+
+            return BuildResponse(rating);
+        }
+
+        private static RatingResponse BuildResponse(Rating rating) =>
+            new RatingResponse(
                 rating.Score.Value,
                 rating.Description,
                 new ReadingResponse(
@@ -51,7 +76,6 @@ namespace GoodReads.Application.Features.Ratings.GetById
                 ),
                 rating.CreatedAt
             );
-        }
 
         private Error RatingNotFoundError(GetRatingByIdRequest request)
         {

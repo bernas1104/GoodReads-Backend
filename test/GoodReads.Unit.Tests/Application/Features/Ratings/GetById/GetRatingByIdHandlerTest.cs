@@ -1,6 +1,7 @@
 using ErrorOr;
 
 using GoodReads.Application.Common.Repositories.MongoDb;
+using GoodReads.Application.Common.Services;
 using GoodReads.Application.Features.Ratings;
 using GoodReads.Application.Features.Ratings.GetById;
 using GoodReads.Domain.RatingAggregate.Entities;
@@ -16,21 +17,28 @@ namespace GoodReads.Unit.Tests.Application.Features.Ratings.GetById
     {
         private readonly IRepository<Rating, RatingId, Guid> _repository;
         private readonly ILogger<GetRatingByIdHandler> _logger;
+        private readonly ICachingService _cachingService;
         private readonly GetRatingByIdHandler _handler;
 
         public GetRatingByIdHandlerTest()
         {
             _repository = Substitute.For<IRepository<Rating, RatingId, Guid>>();
             _logger = Substitute.For<ILogger<GetRatingByIdHandler>>();
-            _handler = new (_repository, _logger);
+            _cachingService = Substitute.For<ICachingService>();
+            _handler = new (_repository, _logger, _cachingService);
         }
 
         [Fact]
-        public async Task GivenGetRatingByIdRequest_WhenRatingFound_ShouldReturnRatingResponse()
+        public async Task GivenGetRatingByIdRequest_WhenRatingNotFound_ShouldReturnRatingResponse()
         {
             // arrange
             var ratingId = Guid.NewGuid();
             var request = new GetRatingByIdRequest(ratingId);
+
+            _cachingService.GetAsync<Rating>(
+                Arg.Any<string>(),
+                Arg.Any<CancellationToken>()
+            ).Returns((Rating?)null);
 
             _repository.GetByIdAsync(
                 Arg.Any<RatingId>(),
@@ -49,15 +57,42 @@ namespace GoodReads.Unit.Tests.Application.Features.Ratings.GetById
         }
 
         [Fact]
-        public async Task GivenGetRatingByIdRequest_WhenRatingNotFound_ShouldReturnErrorNotFound()
+        public async Task GivenGetRatingByIdRequest_WhenRatingFound_ShouldReturnErrorNotFound()
         {
             // arrange
             var ratingId = Guid.NewGuid();
             var rating = RatingMock.Get(id: RatingId.Create(ratingId));
             var request = new GetRatingByIdRequest(ratingId);
 
+            _cachingService.GetAsync<Rating>(
+                Arg.Any<string>(),
+                Arg.Any<CancellationToken>()
+            ).Returns((Rating?)null);
+
             _repository.GetByIdAsync(
                 Arg.Is<RatingId>(r => r.Equals(RatingId.Create(ratingId))),
+                Arg.Any<CancellationToken>()
+            ).Returns(rating);
+
+            // act
+            var response = await _handler.Handle(request, CancellationToken.None);
+
+            // assert
+            response.Should().NotBeNull();
+            response.IsError.Should().BeFalse();
+            response.Value.Should().BeOfType<RatingResponse>();
+        }
+
+        [Fact]
+        public async Task GivenGetRatingByIdRequest_WhenRatingFoundOnCache_ShouldReturnRatingResponse()
+        {
+            // arrange
+            var ratingId = Guid.NewGuid();
+            var rating = RatingMock.Get(id: RatingId.Create(ratingId));
+            var request = new GetRatingByIdRequest(ratingId);
+
+            _cachingService.GetAsync<Rating>(
+                Arg.Any<string>(),
                 Arg.Any<CancellationToken>()
             ).Returns(rating);
 

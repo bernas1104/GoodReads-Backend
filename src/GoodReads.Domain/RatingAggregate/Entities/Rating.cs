@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 using GoodReads.Domain.Common.MongoDb;
 using GoodReads.Domain.RatingAggregate.ValueObjects;
 
@@ -10,6 +12,24 @@ namespace GoodReads.Domain.RatingAggregate.Entities
         public Reading Reading { get; private set; }
         public UserId UserId { get; private set; }
         public BookId BookId { get; private set; }
+
+        [JsonConstructor]
+        public Rating(
+            RatingId id,
+            Score score,
+            string description,
+            Reading reading,
+            UserId userId,
+            BookId bookId
+        )
+        {
+            Id = id;
+            Score = score;
+            Description = description;
+            Reading = reading;
+            UserId = userId;
+            BookId = bookId;
+        }
 
         private Rating(
             RatingId id,

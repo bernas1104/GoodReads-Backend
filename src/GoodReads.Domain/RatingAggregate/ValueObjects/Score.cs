@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 using GoodReads.Domain.Common;
 using GoodReads.Domain.Common.Exceptions;
 
@@ -9,6 +11,7 @@ namespace GoodReads.Domain.RatingAggregate.ValueObjects
     {
         public int Value { get; private set; }
 
+        [JsonConstructor]
         public Score(int value)
         {
             value.Throw(() => new DomainException("'Score' must be between 1 and 5"))
