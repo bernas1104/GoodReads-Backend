@@ -17,7 +17,6 @@ namespace GoodReads.Unit.Tests.Api.Filters
         private readonly ErrorOrResponseFilter _filter;
         private ResultExecutingContext? _context;
         private ActionContext? _actionContext;
-        // private readonly IActionResult _actionResult;
 
         public ErrorOrResponseFilterTest()
         {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using GoodReads.IOC;
 using System.Diagnostics.CodeAnalysis;
 using GoodReads.Api.Filters;
+using GoodReads.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
+app.UseMiddleware<ExceptionsMiddleware>();
 
 app.Run();
 
