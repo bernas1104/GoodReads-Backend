@@ -39,7 +39,6 @@ namespace GoodReads.Application.Features.Books.GetPaginated
                     Isbn: b.Isbn,
                     Author: b.Author,
                     Gender: b.Gender.Name
-                    // Cover: b.Cover.ToArray()
                 )),
                 CurrentPage: request.Page,
                 TotalItens: booksCount,

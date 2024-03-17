@@ -64,7 +64,7 @@ namespace GoodReads.Unit.Tests.Application.Features.Ratings.GetPaginanted
             response.Data.Should().HaveCount(1);
         }
 
-        private void TryParseGuid(ref Guid? parsedGuid, string? guidString)
+        private static void TryParseGuid(ref Guid? parsedGuid, string? guidString)
         {
             if (Guid.TryParse(guidString, out var bookParsed))
             {

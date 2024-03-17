@@ -36,6 +36,11 @@ namespace GoodReads.Domain.BookAggregate.ValueObjects
             _scores[score] += 1;
         }
 
+        public void UpdateRemove(int score)
+        {
+            _scores[score] -= 1;
+        }
+
         public override IEnumerable<object?> GetEqualityComponents()
         {
             yield return Value;

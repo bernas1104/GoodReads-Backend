@@ -61,14 +61,14 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
         }
 
         public Task<TAggregate?> GetByFilterAsync(
-            Expression<Func<TAggregate, bool>> expression,
+            Expression<Func<TAggregate, bool>> filter,
             CancellationToken cancellationToken = default
         )
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             return _set.FirstOrDefaultAsync(
-                expression,
+                filter,
                 cancellationToken
             );
         }
@@ -99,7 +99,10 @@ namespace GoodReads.Infrastructure.EntityFramework.Repositories
             return _set.CountAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(TAggregate aggregate, CancellationToken cancellationToken = default)
+        public async Task DeleteAsync(
+            TAggregate aggregate,
+            CancellationToken cancellationToken = default
+        )
         {
             cancellationToken.ThrowIfCancellationRequested();
 

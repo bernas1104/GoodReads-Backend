@@ -101,12 +101,6 @@ namespace GoodReads.Infrastructure.EntityFramework.Contexts.Mappings
                 }
             );
 
-            /*
-            builder.Property(x => x.Cover)
-                .HasColumnName("Cover")
-                .IsRequired(false);
-            */
-
             builder.OwnsMany(
                 x => x.RatingIds,
                 y => {
@@ -118,7 +112,7 @@ namespace GoodReads.Infrastructure.EntityFramework.Contexts.Mappings
 
                     y.Property(z => z.Value)
                         .ValueGeneratedNever()
-                        .HasColumnName("RatingId");
+                        .HasColumnName("BookRatingId");
                 }
             );
 

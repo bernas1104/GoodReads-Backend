@@ -30,14 +30,6 @@ namespace GoodReads.Domain.BookAggregate.Builders
             _book = Book.Create(title, isbn, author, gender);
         }
 
-        /*
-        public IBookBuilder AddCover(IEnumerable<byte> cover)
-        {
-            _book.SetCover(cover);
-            return this;
-        }
-        */
-
         public IBookBuilder AddDescription(string description)
         {
             _book.SetDescription(description);

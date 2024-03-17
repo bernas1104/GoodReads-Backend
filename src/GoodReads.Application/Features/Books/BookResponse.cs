@@ -5,6 +5,5 @@ namespace GoodReads.Application.Features.Books
         string Isbn,
         string Author,
         string Gender
-        // byte[] Cover
     );
 }

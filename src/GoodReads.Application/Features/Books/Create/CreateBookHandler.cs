@@ -77,7 +77,6 @@ namespace GoodReads.Application.Features.Books.Create
             );
 
             builder.AddDescription(request.Description);
-            // builder.AddCover(request.Cover);
             builder.AddBookData(
                 request.BookData.Publisher,
                 request.BookData.YearOfPublication,

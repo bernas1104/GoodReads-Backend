@@ -22,7 +22,7 @@ namespace GoodReads.Application.Common.Repositories.EntityFramework
             CancellationToken cancellationToken = default
         );
         Task<TAggregate?> GetByFilterAsync(
-            Expression<Func<TAggregate, bool>> expression,
+            Expression<Func<TAggregate, bool>> filter,
             CancellationToken cancellationToken = default
         );
         Task<IEnumerable<TAggregate>> GetPaginatedAsync(
@@ -32,6 +32,9 @@ namespace GoodReads.Application.Common.Repositories.EntityFramework
             CancellationToken cancellationToken = default
         );
         Task<int> GetCountAsync(CancellationToken cancellationToken = default);
-        Task DeleteAsync(TAggregate aggregate, CancellationToken cancellationToken);
+        Task DeleteAsync(
+            TAggregate aggregate,
+            CancellationToken cancellationToken = default
+        );
     }
 }

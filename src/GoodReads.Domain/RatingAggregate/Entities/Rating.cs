@@ -45,6 +45,12 @@ namespace GoodReads.Domain.RatingAggregate.Entities
             BookId = BookId.Create(bookId);
         }
 
+        public void Update(string description)
+        {
+            Description = description;
+            Update();
+        }
+
         public static Rating Create(
             Score score,
             string description,

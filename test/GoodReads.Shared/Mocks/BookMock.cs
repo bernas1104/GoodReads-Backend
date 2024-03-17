@@ -39,7 +39,6 @@ namespace GoodReads.Shared.Mocks
                         f.Date.Recent().Year,
                         f.Random.Int(100, 500)
                     );
-                    // builder.AddCover(Array.Empty<byte>());
 
                     return builder.GetBook();
                 }
@@ -62,7 +61,6 @@ namespace GoodReads.Shared.Mocks
                         f.Date.Recent().Year,
                         f.Random.Int(100, 500)
                     );
-                    // builder.AddCover(Array.Empty<byte>());
 
                     return builder.GetBook();
             }).GenerateBetween(quantity ?? 1, quantity ?? 1);
@@ -83,7 +81,6 @@ namespace GoodReads.Shared.Mocks
                         YearOfPublication: f.Random.Int(1900, DateTime.UtcNow.Year),
                         Pages: f.Random.Int(20, 500)
                     )
-                    // Cover: Array.Empty<byte>()
                 )
             ));
         }
@@ -109,7 +106,6 @@ namespace GoodReads.Shared.Mocks
                     Isbn: f.Random.String2(10),
                     Author: f.Person.FullName,
                     Gender: Gender.FromValue(f.Random.Int(0, 5)).Name
-                    // Cover: Array.Empty<byte>()
                 )
             ));
         }
@@ -125,7 +121,6 @@ namespace GoodReads.Shared.Mocks
                     MeanScore: f.Random.Decimal(0, 5),
                     Gender: Gender.FromValue(f.Random.Int(0, 5)).Name,
                     BookData: GetBookDataResponse(),
-                    // Cover: Array.Empty<byte>(),
                     RatingIds: new List<Guid>{ Guid.NewGuid() }
                 )
             ));
@@ -151,7 +146,6 @@ namespace GoodReads.Shared.Mocks
                 new UpdateBookRequest(
                     Id: id ?? Guid.NewGuid(),
                     Description: description ?? f.Random.String2(20)
-                    // Cover: Array.Empty<byte>()
                 )
             ));
         }

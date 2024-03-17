@@ -107,7 +107,7 @@ namespace GoodReads.Infrastructure.Mongo.Repositories
 
         public async Task<TAggregate?> GetByFilterAsync(
             Expression<Func<TAggregate, bool>> filter,
-            CancellationToken cancellationToken
+            CancellationToken cancellationToken = default
         )
         {
             var queryResult = await _context.GetCollection<TAggregate>()

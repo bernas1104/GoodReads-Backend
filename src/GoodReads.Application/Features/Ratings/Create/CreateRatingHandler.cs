@@ -81,7 +81,7 @@ namespace GoodReads.Application.Features.Ratings.Create
             );
         }
 
-        private Rating CreateRating(CreateRatingRequest request) => Rating.Create(
+        private static Rating CreateRating(CreateRatingRequest request) => Rating.Create(
             score: new Score(request.Score),
             description: request.Description,
             reading: new Reading(

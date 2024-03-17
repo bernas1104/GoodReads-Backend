@@ -14,7 +14,6 @@ namespace GoodReads.Domain.BookAggregate.Entities
         public MeanScore MeanScore { get; private set; }
         public Gender Gender { get; private set; }
         public BookData BookData { get; private set; }
-        // public IEnumerable<byte> Cover { get; private set; }
         public IReadOnlyList<RatingId> RatingIds { get => _ratingIds.AsReadOnly(); }
         private readonly List<RatingId> _ratingIds;
 
@@ -28,11 +27,8 @@ namespace GoodReads.Domain.BookAggregate.Entities
             Gender = gender;
             MeanScore = new ();
 
-            // Cover = new List<byte>();
             _ratingIds = new List<RatingId>();
         }
-
-        // public void SetCover(IEnumerable<byte> cover) => Cover = cover;
 
         public void SetDescription(string description)
         {
@@ -53,10 +49,16 @@ namespace GoodReads.Domain.BookAggregate.Entities
             Update();
         }
 
-        public void Update(string description/*, byte[] cover*/)
+        public void RemoveRating(RatingId ratingId, int score)
+        {
+            _ratingIds.Remove(ratingId);
+
+            MeanScore.UpdateRemove(score);
+        }
+
+        public void Update(string description)
         {
             Description = description;
-            // Cover = cover;
 
             Update();
         }

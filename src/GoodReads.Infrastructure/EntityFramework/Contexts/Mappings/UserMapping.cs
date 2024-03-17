@@ -40,7 +40,7 @@ namespace GoodReads.Infrastructure.EntityFramework.Contexts.Mappings
 
                     y.Property(z => z.Value)
                         .ValueGeneratedNever()
-                        .HasColumnName("RatingId");
+                        .HasColumnName("UserRatingId");
                 }
             );
 
