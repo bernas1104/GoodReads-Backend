@@ -66,7 +66,7 @@ namespace GoodReads.Unit.Tests.Api.Middlewares
             response.Should().BeOfType<List<ProblemDetails>>();
 
             _context.Response.ContentType.Should()
-                .Be("application/json+problem; charset=utf-8");
+                .Be("application/problem+json; charset=utf-8");
             _context.Response.StatusCode.Should().Be(expectedStatusCode);
         }
 
@@ -102,7 +102,7 @@ namespace GoodReads.Unit.Tests.Api.Middlewares
             response.Should().BeOfType<List<ProblemDetails>>();
 
             _context.Response.ContentType.Should()
-                .Be("application/json+problem; charset=utf-8");
+                .Be("application/problem+json; charset=utf-8");
             _context.Response.StatusCode.Should().Be(expectedStatusCode);
         }
     }

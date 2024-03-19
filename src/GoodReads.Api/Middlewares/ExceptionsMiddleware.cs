@@ -35,7 +35,7 @@ namespace GoodReads.Api.Middlewares
         //[ExcludeFromCodeCoverage]
         private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
-            context.Response.ContentType = "application/json+problem; charset=utf-8";
+            context.Response.ContentType = "application/problem+json; charset=utf-8";
 
             context.Response.StatusCode = (int)MapHttpStatusCode(ex);
 
