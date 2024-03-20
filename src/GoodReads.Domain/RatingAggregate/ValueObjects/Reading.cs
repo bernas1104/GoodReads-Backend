@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 using GoodReads.Domain.Common;
 using GoodReads.Domain.Common.Exceptions;
 
@@ -12,7 +10,6 @@ namespace GoodReads.Domain.RatingAggregate.ValueObjects
         public DateTime InitiatedAt { get; private set; }
         public DateTime FinishedAt { get; private set; }
 
-        [JsonConstructor]
         public Reading(DateTime initiatedAt, DateTime finishedAt)
         {
             finishedAt.Throw(() => new DomainException("'FinishedAt' must be greater than 'InitiatedAt'"))

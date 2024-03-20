@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 using GoodReads.Domain.Common.MongoDb;
 
 namespace GoodReads.Domain.RatingAggregate.ValueObjects
@@ -8,7 +6,6 @@ namespace GoodReads.Domain.RatingAggregate.ValueObjects
     {
         public override Guid Value { get; protected set; }
 
-        [JsonConstructor]
         private RatingId(Guid value)
         {
             Value = value;
