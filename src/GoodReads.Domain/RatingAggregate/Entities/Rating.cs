@@ -13,7 +13,6 @@ namespace GoodReads.Domain.RatingAggregate.Entities
 
         public Rating()
         {
-            //
         }
 
         private Rating(

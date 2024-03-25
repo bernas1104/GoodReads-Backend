@@ -5,5 +5,11 @@ namespace GoodReads.Domain.Common.MongoDb
         where TId : AggregateRootId<TIdType>
     {
         public TId Id { get; protected set; }
+
+        protected AggregateRoot()
+        {}
+
+        protected AggregateRoot(DateTime createdAt) : base(createdAt)
+        {}
     }
 }

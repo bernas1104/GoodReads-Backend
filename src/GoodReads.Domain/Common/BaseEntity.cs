@@ -6,6 +6,11 @@ namespace GoodReads.Domain.Common
         public DateTime UpdatedAt { get; private set; }
         public DateTime? DeletedAt { get; private set; }
 
+        protected BaseEntity(DateTime createdAt)
+        {
+            CreatedAt = createdAt;
+        }
+
         protected BaseEntity()
         {
             CreatedAt = DateTime.UtcNow;
