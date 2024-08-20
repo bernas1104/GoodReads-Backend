@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    ports: 
+      - ${GOODREADS_DATABASE_PORT-5432}:5432
+    environment:
+      POSTGRES_USER: ${GOODREADS_DATABASE_USER}
+      POSTGRES_PASSWORD: ${GOODREADS_DATABASE_PASSWORD}
+      POSTGRES_DB: ${GOODREADS_DATABASE_NAME}
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
+    driver: local

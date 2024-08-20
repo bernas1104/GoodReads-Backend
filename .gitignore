@@ -488,3 +488,6 @@ $RECYCLE.BIN/
 
 # Appsettings
 appsettings.Development.json
+
+# VSCode
+.vscode/

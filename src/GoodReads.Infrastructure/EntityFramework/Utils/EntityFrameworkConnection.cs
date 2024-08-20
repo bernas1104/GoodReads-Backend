@@ -23,7 +23,7 @@ namespace GoodReads.Infrastructure.EntityFramework.Utils
             services.Configure<EntityFrameworkConnectionOptions>(section);
 
             services.AddDbContext<TContext>(
-                opt => opt.UseSqlServer(
+                opt => opt.UseNpgsql(
                     connectionString,
                     o => o.MigrationsHistoryTable(
                         tableName: HistoryRepository.DefaultTableName,
@@ -32,7 +32,7 @@ namespace GoodReads.Infrastructure.EntityFramework.Utils
                 )
             );
 
-            services.AddSqlServer<TContext>(connectionString);
+            services.AddNpgsql<TContext>(connectionString);
         }
     }
 }
